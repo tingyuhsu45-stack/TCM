@@ -15,6 +15,8 @@ The primary focus of this MVP is the **Consultant/Trainer Experience**. It will 
 
 ### 1. The Sessions Dashboard
 - Displays a list of active training cohorts (e.g., "Leadership Q3", "Management Basics 101").
+- **Sorting & Filtering**: Trainers can seamlessly sort the session list by Course Name, Date, and Company Taught.
+- **Trainer Notes**: Includes a quick custom note field for the trainer to write down anything relevant before or after the class.
 - Shows a high-level status of completion across the 3 core surveys (Pre, End, Refresher) for each cohort.
 
 ### 2. The Smart Survey Builder & AI Generator
