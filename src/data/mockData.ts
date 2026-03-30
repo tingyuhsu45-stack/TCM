@@ -1,103 +1,151 @@
-import type { Session, SurveyTemplate, FeedbackScenario, SurveyResponse } from '../types';
+import type { Session, SurveyResponse, FeedbackScenario, SurveyTemplate } from '../types';
 
-export const tcmServicesList = [
-  'The Investigation Company',
-  'The Mediation Company',
-  'Resolution Framework',
-  'The TCM Academy',
-  'The People and Culture Association',
-  'Engage Leadership',
-  'Engage Coaching',
-  'People and Culture',
-  'Other:'
+export const mockAiScenariosLibrary: FeedbackScenario[] = [
+  {
+    id: 'ai-req-1',
+    scenarioText: "A vendor calls you furious that their invoice hasn't been paid for 60 days. They are threatening to halt all services tomorrow, which would stop production.",
+    prompt: "Write exactly what you would say on the phone right now to de-escalate this vendor.",
+    rubric: [
+      "Success: Acknowledged the vendor's frustration and urgency.",
+      "Success: Committed to investigating the payment immediately.",
+      "Fail: Defended the company's accounting department.",
+      "Fail: Made a hard promise on a specific payment time without checking."
+    ],
+    managerChecklist: [
+      "Remains calm under fire",
+      "Avoids placing internal blame",
+      "Focuses on process resolution"
+    ]
+  },
+  {
+    id: 'ai-req-2',
+    scenarioText: "Your top-performing employee sends an email at 10pm saying they are 'burned out' and need to take 2 weeks of leave immediately starting tomorrow.",
+    prompt: "Draft an email response to this employee.",
+    rubric: [
+      "Success: Prioritizes employee well-being over coverage gaps.",
+      "Success: Approves the immediate time off unconditionally.",
+      "Fail: Asks them to finish their current project first.",
+      "Fail: Mentions the hardship this will put on the rest of the team."
+    ],
+    managerChecklist: [
+      "Empathy first communication",
+      "Decisive crisis management",
+      "Protects psychological safety"
+    ]
+  }
 ];
 
 export const preSessionTemplate: SurveyTemplate = {
-  title: 'Pre-Session Preparation form',
+  title: 'Learning Preparation Form',
   questions: [
-    { id: '1', type: 'text', text: 'What motivated you to attend this course?' },
-    { id: '2', type: 'text', text: 'Describe a recent situation related to this course topic that you had to deal with. What did you do?' },
-    { id: '3', type: 'choice', text: 'Which statement best describes your current confidence in handling situations related to this course?', options: [
-      'I handle these situations effectively',
-      'I manage some aspects but struggle with others',
-      'I often feel unsure or avoid these situations',
-      'I have little or no experience with these situations'
-    ]},
-    { id: '4', type: 'text', text: 'What is one situation in your role at work, where you would most like to improve your approach related to this course?' },
-    { id: '5', type: 'text', text: 'What skills, behavior or capabilities do you hope to achieve from this training course?' },
-    { id: '6', type: 'text', text: 'Is there anything else you feel the trainer needs to know to help ensure your experience meets your needs?' },
-    { id: '7', type: 'choice', text: 'May TCM use your response in marketing materials?', options: ['Yes, happy to use', 'No, please don’t use'] },
-    { id: '8', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: tcmServicesList }
+    { id: '1', type: 'choice', text: 'A1. Sarah, a team leader in Finance, comes to you after a meeting. She is visibly upset because her colleague Tom publicly dismissed her proposal in front of the whole team. She wants you, as her manager, to speak to Tom and \'sort him out.\' What do you do?', options: [
+      '[3] Listen to Sarah, acknowledge how she feels, and ask her what outcome she would ideally want from this situation before deciding on any action',
+      '[2] Arrange a meeting with both Sarah and Tom together so they can talk it through, and mediate the conversation yourself',
+      '[1] Speak to Tom privately and ask him to apologise to Sarah to prevent the situation from escalating',
+      '[0] Tell Sarah that disagreements happen in meetings and she should try not to take professional feedback personally'
+    ] },
+    { id: '2', type: 'choice', text: 'A2. You have noticed that James, one of your direct reports in Operations, has been arriving late and missing deadlines over the past three weeks. His work quality has also dropped. Other team members have started commenting on it. You need to address this. What do you do?', options: [
+      '[3] Schedule a private one-to-one with James, open with curiosity by asking how he is doing, and explore whether there are underlying issues before discussing the performance concerns',
+      '[2] Send James an email outlining the specific instances of lateness and missed deadlines, and ask him to respond with an explanation and an improvement plan',
+      '[1] Mention it casually at your next regular catch-up and hope the issue resolves itself once he knows you have noticed',
+      '[0] Raise it at the next team meeting as a general reminder about punctuality and deadlines, without naming James, to avoid an awkward conversation'
+    ] },
+    { id: '3', type: 'text', text: 'B1. What motivated you to attend this course?' },
+    { id: '4', type: 'text', text: 'B2. Describe a recent situation related to this course topic that you had to deal with. What did you do, and what was the result?' },
+    { id: '5', type: 'choice', text: 'B3. Which statement best describes how you currently handle situations related to this course topic?', options: [
+      '[4] I handle these situations effectively and get consistent positive results',
+      '[3] I manage most aspects but still struggle with some',
+      '[2] I often feel unsure or avoid these situations',
+      '[1] I have little or no experience with these situations'
+    ] },
+    { id: '6', type: 'text', text: 'B4. What is one situation at work where you would most like to improve your approach related to this course?' },
+    { id: '7', type: 'text', text: 'B5. What skills, behaviours, or capabilities do you hope to develop from this training?' },
+    { id: '8', type: 'text', text: 'B6. Is there anything else the trainer needs to know to ensure this course meets your needs?' },
+    { id: '9', type: 'text', text: 'Optional: Would you like to share a testimonial about your TCM experience?' },
+    { id: '10', type: 'choice', text: 'Optional: May TCM use your response in marketing materials?', options: ['Yes, happy to use', 'No, please do not use'] },
+    { id: '11', type: 'choice', text: 'Optional: Would you like information about other TCM services?', options: ['Yes, please get in touch', 'No, thank you'] }
   ]
 };
 
 export const endSessionTemplate: SurveyTemplate = {
   title: 'Learner Reflection Form',
   questions: [
-    { id: '1', type: 'text', text: 'What is one concept, tool, or idea from today that you understand clearly and could explain to someone else?' },
-    { id: '2', type: 'text', text: 'Imagine you’re back at work tomorrow. Which situation would you apply this training to first, and what would you do differently?' },
-    { id: '3', type: 'choice', text: 'Choose the statement that best describes your readiness to apply what you learned:', options: [
-      'I can confidently apply the tools in real situations',
-      'I can apply some tools but would like more practice',
-      'I understand the concepts but don’t yet feel ready to use them',
-      'I’m unclear on how to apply the tools'
-    ]},
-    { id: '4', type: 'choice', text: 'During the session, you practised scenarios or role-plays. Which statement best reflects your performance?', options: [
-      'I demonstrated the behaviors effectively',
-      'I partially demonstrated them and know what to improve',
-      'I struggled to demonstrate the behaviors',
-      'We didn’t do a scenario/role-play'
-    ]},
-    { id: '5', type: 'text', text: 'What positive outcome do you expect this training to help you achieve in your role?' },
-    { id: '6', type: 'text', text: 'What improvements would make this course even better or more useful for you? (E.g. Training Style, course structure, content relevance, pace, etc.)' },
+    { id: '1', type: 'choice', text: 'A1. Priya, a project coordinator in Marketing, sends you an urgent message after a client call. She is angry because her colleague Daniel interrupted her repeatedly during the presentation and took credit for her ideas in front of the client. She wants you to formally reprimand Daniel. What do you do?', options: [
+      '[3] Meet with Priya privately, listen to her account, validate her frustration, and ask what resolution she would consider fair before taking any steps',
+      '[2] Set up a three-way meeting with Priya and Daniel so they can air their perspectives, and facilitate the conversation yourself',
+      '[1] Have a quiet word with Daniel and tell him to be more respectful of Priya\'s contributions in future meetings',
+      '[0] Explain to Priya that client calls can be fast-paced and competitive, and suggest she be more assertive next time rather than relying on you to intervene'
+    ] },
+    { id: '2', type: 'choice', text: 'A2. Over the past month, you have noticed that Aisha, a team member in Customer Service, has been making more errors in her case notes and has seemed disengaged during team meetings. Two colleagues have separately mentioned to you that they are picking up extra work because of it. You need to address this. What do you do?', options: [
+      '[3] Book a private conversation with Aisha, start by checking in on how she is feeling generally, and explore what might be behind the change before raising the specific performance concerns',
+      '[2] Document the specific errors and instances of disengagement in an email to Aisha, and request a written improvement plan from her within one week',
+      '[1] Wait until her next performance review, which is in six weeks, and raise it then along with other feedback points',
+      '[0] Ask one of her closer colleagues to have a friendly word with her about picking up the pace, to keep it informal and avoid putting her on the spot'
+    ] },
+    { id: '3', type: 'choice', text: 'B1. Which statement best describes how you now feel about handling situations related to this course topic?', options: [
+      '[4] I handle these situations effectively and get consistent positive results',
+      '[3] I manage most aspects but still struggle with some',
+      '[2] I often feel unsure or avoid these situations',
+      '[1] I have little or no experience with these situations'
+    ] },
+    { id: '4', type: 'text', text: 'B2. What is one concept, tool, or idea from today that you understand clearly and could explain to a colleague?' },
+    { id: '5', type: 'text', text: 'B3. What is the first thing you will do differently at work as a result of this training? With whom, and by when?' },
+    { id: '6', type: 'choice', text: 'B4. If you practised scenarios or role-plays during the session, which statement best reflects your experience?', options: [
+      '[4] I demonstrated the target behaviours effectively and received positive feedback',
+      '[3] I partially demonstrated them and I know what to improve',
+      '[2] I struggled to demonstrate the behaviours in the scenario',
+      '[N/A] We did not do a scenario or role-play in this session'
+    ] },
+    { id: 'v', type: 'choice', text: 'B5. Which statement best describes the value of this course for your role?', options: [
+      '[4] Highly valuable: I gained practical tools I will use immediately',
+      '[3] Valuable: I learned useful concepts I expect to apply over time',
+      '[2] Somewhat valuable: some content was relevant but much was not new',
+      '[1] Limited value: the content did not connect to my real work challenges'
+    ] },
     { id: '7', type: 'choice', text: 'Would you recommend this course to a colleague?', options: ['Yes', 'Maybe', 'No'] },
-    { id: '8', type: 'text', text: 'TCM loves celebrating our customers’ successes and sharing their stories. If you would like to share a testimonial about your experience, please add it here:' },
-    { id: '9', type: 'choice', text: 'May TCM use your response in marketing materials?', options: ['Yes, happy to use', 'No, please don’t use'] },
-    { id: '10', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: tcmServicesList },
-    { id: '11', type: 'scale', text: 'Overall, how would you rate the course? (Please shade in the stars with 1 being very poor and 5 being very good)' }
+    { id: '8', type: 'text', text: 'B6. What would have made this course even more useful for you?' },
+    { id: '9', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: [
+      'The Investigation Company', 'The Mediation Company', 'Resolution Framework', 'The TCM Academy', 'The People and Culture Association', 'Engage Leadership', 'Engage Coaching', 'People and Culture', 'Other'
+    ] },
+    { id: '11', type: 'scale', text: 'Overall, how would you rate the usefulness of the course? (1 being very poor and 5 being very good)', options: ['1','2','3','4','5'] }
   ]
 };
 
 export const refresherTemplate: SurveyTemplate = {
   title: 'Learning Transfer Report',
   questions: [
-    { id: '1', type: 'text', text: 'List the situations where you felt like you had an opportunity to apply the training at work, in the past month.' },
-    { id: '2', type: 'text', text: 'Describe a real situation where you applied something from the training at work. What was the situation? Which specific skill or method did you use? What did you do step-by-step? What happened as a result?' },
-    { id: '3', type: 'text', text: 'Which parts of the training felt difficult to apply in real work? Why?' },
-    { id: '4', type: 'text', text: 'Since the training, what have you done differently at work?' },
-    { id: '5', type: 'text', text: 'What support, tools, or conditions helped you apply what you learnt?' },
-    { id: '6', type: 'text', text: 'What improvements would make this course even better or more useful for you? (E.g. Training Style, course structure, content relevance, pace, etc.)' },
-    { id: '7', type: 'choice', text: 'Would you recommend this course to a colleague?', options: ['Yes', 'Maybe', 'No'] },
-    { id: '8', type: 'text', text: 'TCM loves celebrating our customers’ successes and sharing their stories. If you would like to share a testimonial about your experience, please add it here:' },
-    { id: '9', type: 'choice', text: 'May TCM use your response in marketing materials?', options: ['Yes, happy to use', 'No, please don’t use'] },
-    { id: '10', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: tcmServicesList },
-    { id: '11', type: 'scale', text: 'Overall, how would you rate the usefulness of the course? (Please shade in the stars with 1 being very poor and 5 being very good)' }
+    { id: '1', type: 'choice', text: 'A1. Marcus, a senior analyst in the Risk team, calls you in frustration after a strategy meeting. He says his colleague Elena openly contradicted his analysis in front of the department head and made him look incompetent. He wants you to escalate the matter. What do you do?', options: [
+      '[3] Sit down privately with Marcus, let him share his full perspective, recognise how the experience affected him, and explore together what a constructive resolution might look like before involving anyone else',
+      '[2] Bring Marcus and Elena together for a structured conversation where each can share their view of what happened, and guide them toward an agreement on how to work together going forward',
+      '[1] Speak to Elena separately and explain that publicly contradicting a colleague is unprofessional and ask her to be more diplomatic in future meetings',
+      '[0] Reassure Marcus that disagreements over analysis are normal in a risk team and suggest he prepare more thoroughly for future meetings so his work speaks for itself'
+    ] },
+    { id: '2', type: 'choice', text: 'A2. Over the past few weeks, you have observed that Liam, a team member in Product Development, has stopped contributing ideas during sprint planning, has missed two internal deadlines, and appears withdrawn. What do you do?', options: [
+      '[3] Arrange a private, unhurried conversation with Liam, begin by genuinely asking how he is, and create space for him to share what is going on before discussing the specific work concerns',
+      '[2] Put together a summary of the missed deadlines and reduced participation, share it with Liam by email, and ask him to propose a plan to get back on track within the next five working days',
+      '[1] Decide to wait and see if things improve naturally over the next sprint cycle, since raising it now might add pressure when he is already struggling',
+      '[0] Mention it to the whole team during the next retrospective as a general point about the importance of meeting deadlines and contributing, without singling Liam out'
+    ] },
+    { id: '3', type: 'choice', text: 'B1. Which statement best describes how you now handle situations related to this course topic?', options: [
+      '[4] I handle these situations effectively and get consistent positive results',
+      '[3] I manage most aspects but still struggle with some',
+      '[2] I often feel unsure or avoid these situations',
+      '[1] I have little or no experience with these situations'
+    ] },
+    { id: '4', type: 'choice', text: 'B2. How often have you applied skills or methods from this training in your work?', options: [
+      '[4] Regularly: I use what I learned at least weekly',
+      '[3] Occasionally: I have applied it several times in the past few months',
+      '[2] Rarely: I have applied it once or twice',
+      '[1] Not yet: I have not had the opportunity or felt ready to apply it'
+    ] },
+    { id: '5', type: 'text', text: 'B3. Describe a real situation where you applied something from the training at work. (What was the situation? Which specific skill? What did you do step by step? What happened?)' },
+    { id: '6', type: 'text', text: 'B4. Which parts of the training felt difficult to apply in real work? Why?' },
+    { id: '7', type: 'text', text: 'B5. Since the training, what have you done differently at work?' },
+    { id: '8', type: 'text', text: 'B6. Have you noticed any measurable changes in your team or work environment that may relate to what you learned?' },
+    { id: '9', type: 'text', text: 'B7. What support, tools, or conditions helped (or would have helped) you apply what you learned?' },
+    { id: '10', type: 'text', text: 'B8. What improvements would make this course even more useful?' }
   ]
 };
-
-export const mockAiScenariosLibrary: FeedbackScenario[] = [
-  {
-    id: 'ai-1',
-    scenarioText: 'A team member is continuously late to morning standups but delivers high-quality work.',
-    prompt: 'Based on the LTEM principles, how do you address this without demotivating them?',
-    rubric: ['Success: Addresses the lateness privately.', 'Red Flag: Punishes them publicly.', 'Red Flag: Ignores the issue.'],
-    managerChecklist: ['Observe next 3 standups', 'Check 1-on-1 meeting notes to verify conversation happened']
-  },
-  {
-    id: 'ai-2',
-    scenarioText: 'Two colleagues are arguing loudly in an open-plan office over a shared project deliverable.',
-    prompt: 'Applying the conflict resolution tools discussed today, outline your immediate next steps.',
-    rubric: ['Success: De-escalates the public argument by moving them to a private room.', 'Red Flag: Takes sides in front of the team.', 'Success: Asks open-ended questions to uncover the root cause.'],
-    managerChecklist: ['Monitor tension levels over 2 weeks', 'Review post-project feedback from both individuals']
-  },
-  {
-    id: 'ai-3',
-    scenarioText: 'A remote employee seems disconnected during meetings and misses minor email deadlines repeatedly.',
-    prompt: 'How would you re-engage this employee using the structured empathy framework?',
-    rubric: ['Success: Begins a 1-on-1 with a wellness check.', 'Red Flag: Immediately issues a formal warning.', 'Red Flag: Assumes they are looking for a new job without asking.'],
-    managerChecklist: ['Track meeting participation rate over 1 month', 'Review weekly deadline hit-rate in Jira/Asana']
-  }
-];
 
 const robustEndSessionTemplate = JSON.parse(JSON.stringify(endSessionTemplate));
 robustEndSessionTemplate.questions.unshift({
@@ -111,101 +159,117 @@ robustEndSessionTemplate.questions.unshift({
   text: `[AI Scenario 1]: ${mockAiScenariosLibrary[0].scenarioText}\n\nQuestion: ${mockAiScenariosLibrary[0].prompt}` 
 });
 
-const mockPopulatedResponses: SurveyResponse[] = [
-  // ================= PRE SESSION=================
-  { id: 'pre-1', stage: 'pre', submittedAt: '2026-04-01T10:00:00Z', answers: {
-    '1': 'I struggle to moderate my tone when I get stressed.', '3': 'I manage some aspects but struggle with others'
-  }},
-  { id: 'pre-2', stage: 'pre', submittedAt: '2026-04-01T11:30:00Z', answers: {
-    '1': 'My manager suggested it.', '3': 'I often feel unsure or avoid these situations'
-  }},
-  { id: 'pre-3', stage: 'pre', submittedAt: '2026-04-02T09:15:00Z', answers: {
-    '1': 'Looking for tools to de-escalate cross-departmental arguments.', '3': 'I manage some aspects but struggle with others'
-  }},
-  { id: 'pre-4', stage: 'pre', submittedAt: '2026-04-02T14:45:00Z', answers: {
-    '1': 'I am taking on a new leadership role.', '3': 'I have little or no experience with these situations'
-  }},
-  { id: 'pre-5', stage: 'pre', submittedAt: '2026-04-03T16:20:00Z', answers: {
-    '1': 'Dealing with a difficult client who creates internal team friction.', '3': 'I handle these situations effectively'
-  }},
-
-  // ================= END SESSION =================
-  { id: 'end-1', stage: 'end', submittedAt: '2026-04-10T16:05:00Z', answers: {
-      'dynamic-ai-1': 'I would pull them aside in private after the meeting and ask gently if there are structural barriers preventing them from making the standup on time.',
-      'dynamic-ai-2': 'I would approach them calmly and take this into a meeting room so we don\'t disrupt everyone.',
-      '1': 'The structured empathy framework. It makes complete sense to focus on emotional reality first.',
-      '3': 'I can confidently apply the tools in real situations',
-      '4': 'I demonstrated the behaviors effectively',
+export const mockPopulatedResponses: SurveyResponse[] = [
+  // Pre-session answers mapped to the NEW template
+  {
+    id: 'resp-pre-1',
+    stage: 'pre',
+    submittedAt: new Date(Date.now() - 31 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      '1': '[2] Arrange a meeting with both Sarah and Tom together so they can talk it through, and mediate the conversation yourself', 
+      '2': '[2] Send James an email outlining the specific instances of lateness and missed deadlines, and ask him to respond with an explanation and an improvement plan', 
+      '3': 'Mandatory HR mandate', 
+      '4': 'Had a blowout with ops over scheduling, just avoided them.', 
+      '5': '[2] I often feel unsure or avoid these situations' 
+    }
+  },
+  {
+    id: 'resp-pre-2',
+    stage: 'pre',
+    submittedAt: new Date(Date.now() - 32 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      '1': '[3] Listen to Sarah, acknowledge how she feels, and ask her what outcome she would ideally want from this situation before deciding on any action', 
+      '2': '[1] Mention it casually at your next regular catch-up and hope the issue resolves itself once he knows you have noticed', 
+      '3': 'Wanting to improve communication', 
+      '4': 'Tried to mediate between two junior devs, went poorly.', 
+      '5': '[3] I manage most aspects but still struggle with some' 
+    }
+  },
+  // End session answers mapped to the NEW template
+  {
+    id: 'resp-end-1',
+    stage: 'end',
+    submittedAt: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      'dynamic-ai-1': "I would calmly assert we are checking the systems immediately and taking the vendor seriously.",
+      'dynamic-ai-2': "I'd approve their time off instantly, HR policies can be handled retrospectively.",
+      '1': '[3] Meet with Priya privately, listen to her account, validate her frustration, and ask what resolution she would consider fair before taking any steps', 
+      '2': '[3] Book a private conversation with Aisha, start by checking in on how she is feeling generally, and explore what might be behind the change before raising the specific performance concerns', 
+      '3': '[4] I handle these situations effectively and get consistent positive results', 
+      '4': 'The structured empathy mechanism.', 
+      '5': 'I will hold weekly 1-on-1s without an agenda to just listen.', 
+      'v': '[4] Highly valuable: I gained practical tools I will use immediately',
       '7': 'Yes',
-      '11': '5'
-  }},
-  { id: 'end-2', stage: 'end', submittedAt: '2026-04-10T16:07:30Z', answers: {
-      'dynamic-ai-1': 'I would just ignore it because they are a top performer.',
-      'dynamic-ai-2': 'I\'d step between them and tell them they are acting unprofessionally and that they need to get back to their desks immediately. Then I would email their manager.',
-      '1': 'Active listening and the resolution triangle.',
-      '3': 'I can apply some tools but would like more practice',
-      '4': 'I partially demonstrated them and know what to improve',
+      '11': '5' 
+    }
+  },
+  {
+    id: 'resp-end-2',
+    stage: 'end',
+    submittedAt: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      'dynamic-ai-1': "Inform the vendor that threatening to halt services breaches our Master Service Agreement.",
+      'dynamic-ai-2': "Ask them to finish the sprint tomorrow, then take off.",
+      '1': '[2] Set up a three-way meeting with Priya and Daniel so they can air their perspectives, and facilitate the conversation yourself', 
+      '2': '[2] Document the specific errors and instances of disengagement in an email to Aisha, and request a written improvement plan from her within one week', 
+      '3': '[3] I manage most aspects but still struggle with some', 
+      '4': 'Using active listening.', 
+      '5': 'I will try to not interrupt in meetings.', 
+      'v': '[3] Valuable: I learned useful concepts I expect to apply over time',
       '7': 'Maybe',
-      '11': '3'
-  }},
-  { id: 'end-3', stage: 'end', submittedAt: '2026-04-10T16:12:00Z', answers: {
-      'dynamic-ai-1': 'Set up a private 15 minute call. Ask open ended questions about their morning routine.',
-      'dynamic-ai-2': 'Move them to a private space immediately. Use the "seek to understand" method by asking what exactly is blocking the shared deliverable.',
-      '1': 'Conflict de-escalation steps using physical barriers and tone matching.',
-      '3': 'I can confidently apply the tools in real situations',
-      '4': 'I demonstrated the behaviors effectively',
+      '11': '4' 
+    }
+  },
+  {
+    id: 'resp-end-3',
+    stage: 'end',
+    submittedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      '1': '[3] Meet with Priya privately, listen to her account, validate her frustration, and ask what resolution she would consider fair before taking any steps', 
+      '2': '[3] Book a private conversation with Aisha, start by checking in on how she is feeling generally, and explore what might be behind the change before raising the specific performance concerns', 
+      '3': '[4] I handle these situations effectively and get consistent positive results', 
+      'v': '[4] Highly valuable: I gained practical tools I will use immediately',
       '7': 'Yes',
-      '11': '4'
-  }},
-  { id: 'end-4', stage: 'end', submittedAt: '2026-04-10T16:20:45Z', answers: {
-      'dynamic-ai-1': 'I would bring it up at the very next standup in front of everyone so the whole team knows the standard applied to everyone.',
-      'dynamic-ai-2': 'Tell them to stop acting like children and provide them a direct command on how to split the deliverable.',
-      '1': 'Honestly I didn\'t learn much that I didn\'t already know as a manager.',
-      '3': 'I can confidently apply the tools in real situations',
-      '4': 'I demonstrated the behaviors effectively',
+      '11': '5' 
+    }
+  },
+  {
+    id: 'resp-end-4',
+    stage: 'end',
+    submittedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      '1': '[3] Meet with Priya privately, listen to her account, validate her frustration, and ask what resolution she would consider fair before taking any steps', 
+      'v': '[4] Highly valuable: I gained practical tools I will use immediately',
+      '7': 'Yes',
+      '11': '4' 
+    }
+  },
+  {
+    id: 'resp-end-5',
+    stage: 'end',
+    submittedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: { 
+      '1': '[1] Have a quiet word with Daniel and tell him to be more respectful of Priya\'s contributions in future meetings',
+      'v': '[3] Valuable: I learned useful concepts I expect to apply over time',
       '7': 'No',
-      '11': '1'
-  }},
-  { id: 'end-5', stage: 'end', submittedAt: '2026-04-10T16:25:12Z', answers: {
-      'dynamic-ai-1': 'Talk to them in private. Find out if there are childcare or transit issues.',
-      'dynamic-ai-2': 'Gently suggest we go grab a coffee in the breakroom to discuss it quietly. Listen actively.',
-      '1': 'The "Red Flag vs Success" rubric concept was very good.',
-      '3': 'I can confidently apply the tools in real situations',
-      '4': 'I partially demonstrated them and know what to improve',
-      '7': 'Yes',
-      '11': '5'
-  }},
-
-  // ================= REFRESHER SESSION (30-day follow up) =================
-  { id: 'ref-1', stage: 'refresher', submittedAt: '2026-05-10T09:00:00Z', answers: {
-    '1': 'A developer and a designer were clashing over specs.',
-    '2': 'I pulled them into a room, used the resolution triangle, and let them both outline their critical path. They resolved it within 15 minutes.',
-    '7': 'Yes',
-    '11': '5'
-  }},
-  { id: 'ref-2', stage: 'refresher', submittedAt: '2026-05-11T11:15:00Z', answers: {
-    '1': 'I had to fire someone.',
-    '2': 'I didn\'t use the tools, I just relied on HR.',
-    '7': 'No',
-    '11': '2'
-  }},
-  { id: 'ref-3', stage: 'refresher', submittedAt: '2026-05-12T14:30:00Z', answers: {
-    '1': 'A junior team member was constantly missing sprint deadlines.',
-    '2': 'Rather than putting them on a PIP, I assumed positive intent and asked open-ended questions. Turns out they were caring for a sick parent. We altered their hours successfully.',
-    '7': 'Yes',
-    '11': '4'
-  }},
-  { id: 'ref-4', stage: 'refresher', submittedAt: '2026-05-13T10:00:00Z', answers: {
-    '1': 'None. Haven\'t had a chance to apply it.',
-    '7': 'Maybe',
-    '11': '3'
-  }},
-  { id: 'ref-5', stage: 'refresher', submittedAt: '2026-05-14T16:45:00Z', answers: {
-    '1': 'An aggressive vendor was making unfair demands.',
-    '2': 'I maintained tone control and used strategic silence to de-escalate their demands over the phone.',
-    '7': 'Yes',
-    '11': '5'
-  }}
+      '11': '2' 
+    }
+  },
+  // Refresher session answers mapped to the NEW template
+  {
+    id: 'resp-ref-1',
+    stage: 'refresher',
+    submittedAt: new Date().toISOString(),
+    answers: { 
+      '1': '[3] Sit down privately with Marcus, let him share his full perspective, recognise how the experience affected him, and explore together what a constructive resolution might look like before involving anyone else', 
+      '2': '[3] Arrange a private, unhurried conversation with Liam, begin by genuinely asking how he is, and create space for him to share what is going on before discussing the specific work concerns', 
+      '3': '[4] I handle these situations effectively and get consistent positive results', 
+      '4': '[3] Occasionally: I have applied it several times in the past few months', 
+      '5': 'I used the resolution framework to handle a dispute between QA and dev teams without resorting to HR.', 
+      '6': 'Hard to remember the exact framework steps when stressed.', 
+      '7': 'I count to 3 before responding to aggressive emails.' 
+    }
+  }
 ];
 
 export const initialSessions: Session[] = [
@@ -218,11 +282,11 @@ export const initialSessions: Session[] = [
     trainerNotes: 'Needs focus on remote communication.',
     surveysCompleted: { pre: true, end: true, refresher: true },
     surveys: {
-      pre: JSON.parse(JSON.stringify(preSessionTemplate)),
+      pre: preSessionTemplate,
       end: robustEndSessionTemplate,
-      refresher: JSON.parse(JSON.stringify(refresherTemplate))
+      refresher: refresherTemplate
     },
-    responses: mockPopulatedResponses
+    responses: mockPopulatedResponses,
   },
   {
     id: 'f9a21',
@@ -233,9 +297,9 @@ export const initialSessions: Session[] = [
     trainerNotes: '',
     surveysCompleted: { pre: false, end: false, refresher: false },
     surveys: {
-      pre: JSON.parse(JSON.stringify(preSessionTemplate)),
-      end: JSON.parse(JSON.stringify(endSessionTemplate)),
-      refresher: JSON.parse(JSON.stringify(refresherTemplate))
+      pre: preSessionTemplate,
+      end: endSessionTemplate,
+      refresher: refresherTemplate
     },
     responses: []
   }
