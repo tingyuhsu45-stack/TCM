@@ -1,4 +1,4 @@
-import type { Session, SurveyTemplate, FeedbackScenario } from '../types';
+import type { Session, SurveyTemplate, FeedbackScenario, SurveyResponse } from '../types';
 
 export const tcmServicesList = [
   'The Investigation Company',
@@ -75,21 +75,130 @@ export const refresherTemplate: SurveyTemplate = {
   ]
 };
 
+export const mockAiScenariosLibrary: FeedbackScenario[] = [
+  {
+    id: 'ai-1',
+    scenarioText: 'A team member is continuously late to morning standups but delivers high-quality work.',
+    prompt: 'Based on the LTEM principles, how do you address this without demotivating them?',
+    rubric: ['Success: Addresses the lateness privately.', 'Red Flag: Punishes them publicly.', 'Red Flag: Ignores the issue.'],
+    managerChecklist: ['Observe next 3 standups', 'Check 1-on-1 meeting notes to verify conversation happened']
+  },
+  {
+    id: 'ai-2',
+    scenarioText: 'Two colleagues are arguing loudly in an open-plan office over a shared project deliverable.',
+    prompt: 'Applying the conflict resolution tools discussed today, outline your immediate next steps.',
+    rubric: ['Success: De-escalates the public argument by moving them to a private room.', 'Red Flag: Takes sides in front of the team.', 'Success: Asks open-ended questions to uncover the root cause.'],
+    managerChecklist: ['Monitor tension levels over 2 weeks', 'Review post-project feedback from both individuals']
+  },
+  {
+    id: 'ai-3',
+    scenarioText: 'A remote employee seems disconnected during meetings and misses minor email deadlines repeatedly.',
+    prompt: 'How would you re-engage this employee using the structured empathy framework?',
+    rubric: ['Success: Begins a 1-on-1 with a wellness check.', 'Red Flag: Immediately issues a formal warning.', 'Red Flag: Assumes they are looking for a new job without asking.'],
+    managerChecklist: ['Track meeting participation rate over 1 month', 'Review weekly deadline hit-rate in Jira/Asana']
+  }
+];
+
+// Combine standard questions with injected AI Questions for the robust Leadership Q3 demo
+const robustEndSessionTemplate = JSON.parse(JSON.stringify(endSessionTemplate));
+robustEndSessionTemplate.questions.unshift({
+  id: 'dynamic-ai-2',
+  type: 'text',
+  text: `[AI Scenario 1]: ${mockAiScenariosLibrary[1].scenarioText}\n\nQuestion: ${mockAiScenariosLibrary[1].prompt}` 
+});
+robustEndSessionTemplate.questions.unshift({
+  id: 'dynamic-ai-1',
+  type: 'text',
+  text: `[AI Scenario 2]: ${mockAiScenariosLibrary[0].scenarioText}\n\nQuestion: ${mockAiScenariosLibrary[0].prompt}` 
+});
+
+const mockPopulatedResponses: SurveyResponse[] = [
+  {
+    id: 'resp-001',
+    stage: 'end',
+    submittedAt: '2026-04-10T16:05:00Z',
+    answers: {
+      'dynamic-ai-1': 'I would pull them aside in private after the meeting. Because they deliver great work, I would start by acknowledging their value to the team, and then firmly but gently ask if there are structural barriers preventing them from making the standup on time.',
+      'dynamic-ai-2': 'I would approach them calmly and say "Let\'s take this into a meeting room so we don\'t disrupt everyone." Once inside, I\'d let them both explain their sides without interrupting.',
+      '1': 'The structured empathy framework. It makes complete sense to focus on the emotional reality before moving to problem-solving.',
+      '3': 'I can confidently apply the tools in real situations',
+      '4': 'I demonstrated the behaviors effectively',
+      '7': 'Yes',
+      '11': '5'
+    }
+  },
+  {
+    id: 'resp-002',
+    stage: 'end',
+    submittedAt: '2026-04-10T16:07:30Z',
+    answers: {
+      'dynamic-ai-1': 'I would just ignore it because they are a top performer and I don\'t want them to quit over something as small as a morning standup.',
+      'dynamic-ai-2': 'I\'d step between them and tell them they are acting unprofessionally and that they need to get back to their desks immediately. Then I would email their manager.',
+      '1': 'Active listening and the resolution triangle.',
+      '3': 'I can apply some tools but would like more practice',
+      '4': 'I partially demonstrated them and know what to improve',
+      '7': 'Maybe',
+      '11': '3'
+    }
+  },
+  {
+    id: 'resp-003',
+    stage: 'end',
+    submittedAt: '2026-04-10T16:12:00Z',
+    answers: {
+      'dynamic-ai-1': 'Set up a private 15 minute call. Ask open ended questions about their morning routine. Emphasize that timeliness is important for team morale regardless of individual output.',
+      'dynamic-ai-2': 'Move them to a private space immediately. Use the "seek to understand" method by asking each person what exactly is blocking the shared deliverable.',
+      '1': 'Conflict de-escalation steps using physical barriers and tone matching.',
+      '3': 'I can confidently apply the tools in real situations',
+      '4': 'I demonstrated the behaviors effectively',
+      '7': 'Yes',
+      '11': '4'
+    }
+  },
+  {
+    id: 'resp-004',
+    stage: 'end',
+    submittedAt: '2026-04-10T16:20:45Z',
+    answers: {
+      'dynamic-ai-1': 'I would bring it up at the very next standup in front of everyone so the whole team knows the standard applied to everyone.',
+      'dynamic-ai-2': 'Tell them to stop acting like children and do their jobs. Provide them a direct command on how to split the deliverable.',
+      '1': 'Honestly I didn\'t learn much that I didn\'t already know as a manager.',
+      '3': 'I can confidently apply the tools in real situations',
+      '4': 'I demonstrated the behaviors effectively',
+      '7': 'No',
+      '11': '1'
+    }
+  },
+  {
+    id: 'resp-005',
+    stage: 'end',
+    submittedAt: '2026-04-10T16:25:12Z',
+    answers: {
+      'dynamic-ai-1': 'Talk to them in private. Find out if there are childcare or transit issues. If so, move the standup time back 15 minutes for the whole team.',
+      'dynamic-ai-2': 'Gently interrupt them, suggest we go grab a coffee in the breakroom to discuss it quietly. Listen actively.',
+      '1': 'The "Red Flag vs Success" rubric concept was very good for framing my own behavior.',
+      '3': 'I can confidently apply the tools in real situations',
+      '4': 'I partially demonstrated them and know what to improve',
+      '7': 'Yes',
+      '11': '5'
+    }
+  }
+];
 
 export const initialSessions: Session[] = [
   {
     id: 'b6e83',
-    courseName: 'Leadership Q3',
+    courseName: 'Leadership Executive Coaching (Q3)',
     date: '2026-04-10',
     companyTaught: 'ACME Corp',
     trainerNotes: 'Needs focus on remote communication.',
-    surveysCompleted: { pre: true, end: false, refresher: false },
+    surveysCompleted: { pre: true, end: true, refresher: false },
     surveys: {
       pre: JSON.parse(JSON.stringify(preSessionTemplate)),
-      end: JSON.parse(JSON.stringify(endSessionTemplate)),
+      end: robustEndSessionTemplate,
       refresher: JSON.parse(JSON.stringify(refresherTemplate))
     },
-    responses: []
+    responses: mockPopulatedResponses
   },
   {
     id: 'f9a21',
@@ -104,31 +213,5 @@ export const initialSessions: Session[] = [
       refresher: JSON.parse(JSON.stringify(refresherTemplate))
     },
     responses: []
-  }
-];
-
-export const mockAiScenario: FeedbackScenario = {
-  id: '1',
-  scenarioText: 'A team member is continuously late to morning standups but delivers high-quality work.',
-  prompt: 'Based on the LTEM principles, how do you address this without demotivating them?',
-  rubric: ['Success: Addresses the lateness privately.', 'Red Flag: Punishes them publicly.', 'Red Flag: Ignores the issue.'],
-  managerChecklist: ['Observe next 3 standups', 'Check 1-on-1 meeting notes to verify conversation happened']
-};
-
-export const mockAiScenariosLibrary: FeedbackScenario[] = [
-  mockAiScenario,
-  {
-    id: '2',
-    scenarioText: 'Two colleagues are arguing loudly in an open-plan office over a shared project deliverable.',
-    prompt: 'Applying the conflict resolution tools discussed today, outline your immediate next steps.',
-    rubric: ['Success: De-escalates the public argument by moving them to a private room.', 'Red Flag: Takes sides in front of the team.', 'Success: Asks open-ended questions to uncover the root cause.'],
-    managerChecklist: ['Monitor tension levels over 2 weeks', 'Review post-project feedback from both individuals']
-  },
-  {
-    id: '3',
-    scenarioText: 'A remote employee seems disconnected during meetings and misses minor email deadlines repeatedly.',
-    prompt: 'How would you re-engage this employee using the structured empathy framework?',
-    rubric: ['Success: Begins a 1-on-1 with a wellness check.', 'Red Flag: Immediately issues a formal warning.', 'Red Flag: Assumes they are looking for a new job without asking.'],
-    managerChecklist: ['Track meeting participation rate over 1 month', 'Review weekly deadline hit-rate in Jira/Asana']
   }
 ];

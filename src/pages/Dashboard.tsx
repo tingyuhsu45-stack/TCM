@@ -15,6 +15,7 @@ export default function Dashboard() {
   const [showAIModal, setShowAIModal] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [fileUploaded, setFileUploaded] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState('');
   const [aiContext, setAiContext] = useState('');
   const [aiQuantity, setAiQuantity] = useState(2);
 
@@ -53,6 +54,7 @@ export default function Dashboard() {
     
     // Reset AI modal state
     setFileUploaded(false);
+    setUploadedFileName('');
     setAiContext('');
     setIsUploading(false);
 
@@ -98,13 +100,16 @@ export default function Dashboard() {
     navigate(`/session/${newSession.id}`);
   };
 
-  const handleUploadSimulation = () => {
-    if (fileUploaded) return; // Prevent re-uploading
-    setIsUploading(true);
-    setTimeout(() => {
-      setIsUploading(false);
-      setFileUploaded(true);
-    }, 1500);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (fileUploaded) return;
+    if (e.target.files && e.target.files.length > 0) {
+      setUploadedFileName(e.target.files[0].name);
+      setIsUploading(true);
+      setTimeout(() => {
+        setIsUploading(false);
+        setFileUploaded(true);
+      }, 1000);
+    }
   };
 
   const handleGenerateAI = () => {
@@ -260,12 +265,17 @@ export default function Dashboard() {
               <div className="p-8 space-y-6">
                  
                  {/* Upload Drag & Drop Area */}
-                 <div 
-                   onClick={handleUploadSimulation}
-                   className={`border-2 border-dashed rounded-2xl p-6 transition-colors flex flex-col items-center justify-center text-center ${
+                 <label 
+                   className={`block w-full border-2 border-dashed rounded-2xl p-6 transition-colors flex flex-col items-center justify-center text-center ${
                      fileUploaded ? 'border-emerald-300 bg-emerald-50 cursor-default' : 'border-indigo-200 bg-indigo-50/30 hover:bg-indigo-50 cursor-pointer group'
                    }`}
                  >
+                    <input 
+                      type="file" 
+                      className="hidden" 
+                      onChange={handleFileChange}
+                      disabled={fileUploaded || isUploading}
+                    />
                     {isUploading && !fileUploaded ? (
                       <Loader2 size={36} className="text-indigo-500 animate-spin mb-3" />
                     ) : fileUploaded ? (
@@ -274,10 +284,10 @@ export default function Dashboard() {
                       <FileUp size={36} className="text-indigo-400 group-hover:text-indigo-600 transition-colors mb-3 transform group-hover:-translate-y-1" />
                     )}
                     <h4 className="font-semibold text-slate-900">
-                      {isUploading && !fileUploaded ? 'Uploading material...' : fileUploaded ? 'Syllabus_2026.pptx Uploaded successfully' : 'Upload Course Materials (Optional)'}
+                      {isUploading && !fileUploaded ? 'Uploading material...' : fileUploaded ? `${uploadedFileName} Uploaded successfully` : 'Upload Course Materials (Optional)'}
                     </h4>
-                    {!fileUploaded && <p className="text-sm text-slate-500 mt-1 max-w-xs">{isUploading ? 'Securing files...' : 'Drag & drop PPTs, PDFs, or Syllabus docs.'}</p>}
-                 </div>
+                    {!fileUploaded && <p className="text-sm text-slate-500 mt-1 max-w-xs">{isUploading ? 'Securing files...' : 'Click to browse PPTs, PDFs, or Syllabus docs.'}</p>}
+                 </label>
 
                  {/* Context Textarea */}
                  <div className="flex flex-col md:flex-row gap-4">

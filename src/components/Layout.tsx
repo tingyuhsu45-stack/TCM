@@ -6,7 +6,7 @@ const Layout = () => {
 
   const navItems = [
     { path: '/', label: 'Sessions', icon: <LayoutDashboard size={20} /> },
-    { path: '/insights', label: 'Global Insights', icon: <BarChart3 size={20} /> },
+    { path: '/insights', label: 'Insights', icon: <BarChart3 size={20} /> },
   ];
 
   return (
