@@ -99,7 +99,6 @@ export const mockAiScenariosLibrary: FeedbackScenario[] = [
   }
 ];
 
-// Combine standard questions with injected AI Questions for the robust Leadership Q3 demo
 const robustEndSessionTemplate = JSON.parse(JSON.stringify(endSessionTemplate));
 robustEndSessionTemplate.questions.unshift({
   id: 'dynamic-ai-2',
@@ -113,76 +112,100 @@ robustEndSessionTemplate.questions.unshift({
 });
 
 const mockPopulatedResponses: SurveyResponse[] = [
-  {
-    id: 'resp-001',
-    stage: 'end',
-    submittedAt: '2026-04-10T16:05:00Z',
-    answers: {
-      'dynamic-ai-1': 'I would pull them aside in private after the meeting. Because they deliver great work, I would start by acknowledging their value to the team, and then firmly but gently ask if there are structural barriers preventing them from making the standup on time.',
-      'dynamic-ai-2': 'I would approach them calmly and say "Let\'s take this into a meeting room so we don\'t disrupt everyone." Once inside, I\'d let them both explain their sides without interrupting.',
-      '1': 'The structured empathy framework. It makes complete sense to focus on the emotional reality before moving to problem-solving.',
+  // ================= PRE SESSION=================
+  { id: 'pre-1', stage: 'pre', submittedAt: '2026-04-01T10:00:00Z', answers: {
+    '1': 'I struggle to moderate my tone when I get stressed.', '3': 'I manage some aspects but struggle with others'
+  }},
+  { id: 'pre-2', stage: 'pre', submittedAt: '2026-04-01T11:30:00Z', answers: {
+    '1': 'My manager suggested it.', '3': 'I often feel unsure or avoid these situations'
+  }},
+  { id: 'pre-3', stage: 'pre', submittedAt: '2026-04-02T09:15:00Z', answers: {
+    '1': 'Looking for tools to de-escalate cross-departmental arguments.', '3': 'I manage some aspects but struggle with others'
+  }},
+  { id: 'pre-4', stage: 'pre', submittedAt: '2026-04-02T14:45:00Z', answers: {
+    '1': 'I am taking on a new leadership role.', '3': 'I have little or no experience with these situations'
+  }},
+  { id: 'pre-5', stage: 'pre', submittedAt: '2026-04-03T16:20:00Z', answers: {
+    '1': 'Dealing with a difficult client who creates internal team friction.', '3': 'I handle these situations effectively'
+  }},
+
+  // ================= END SESSION =================
+  { id: 'end-1', stage: 'end', submittedAt: '2026-04-10T16:05:00Z', answers: {
+      'dynamic-ai-1': 'I would pull them aside in private after the meeting and ask gently if there are structural barriers preventing them from making the standup on time.',
+      'dynamic-ai-2': 'I would approach them calmly and take this into a meeting room so we don\'t disrupt everyone.',
+      '1': 'The structured empathy framework. It makes complete sense to focus on emotional reality first.',
       '3': 'I can confidently apply the tools in real situations',
       '4': 'I demonstrated the behaviors effectively',
       '7': 'Yes',
       '11': '5'
-    }
-  },
-  {
-    id: 'resp-002',
-    stage: 'end',
-    submittedAt: '2026-04-10T16:07:30Z',
-    answers: {
-      'dynamic-ai-1': 'I would just ignore it because they are a top performer and I don\'t want them to quit over something as small as a morning standup.',
+  }},
+  { id: 'end-2', stage: 'end', submittedAt: '2026-04-10T16:07:30Z', answers: {
+      'dynamic-ai-1': 'I would just ignore it because they are a top performer.',
       'dynamic-ai-2': 'I\'d step between them and tell them they are acting unprofessionally and that they need to get back to their desks immediately. Then I would email their manager.',
       '1': 'Active listening and the resolution triangle.',
       '3': 'I can apply some tools but would like more practice',
       '4': 'I partially demonstrated them and know what to improve',
       '7': 'Maybe',
       '11': '3'
-    }
-  },
-  {
-    id: 'resp-003',
-    stage: 'end',
-    submittedAt: '2026-04-10T16:12:00Z',
-    answers: {
-      'dynamic-ai-1': 'Set up a private 15 minute call. Ask open ended questions about their morning routine. Emphasize that timeliness is important for team morale regardless of individual output.',
-      'dynamic-ai-2': 'Move them to a private space immediately. Use the "seek to understand" method by asking each person what exactly is blocking the shared deliverable.',
+  }},
+  { id: 'end-3', stage: 'end', submittedAt: '2026-04-10T16:12:00Z', answers: {
+      'dynamic-ai-1': 'Set up a private 15 minute call. Ask open ended questions about their morning routine.',
+      'dynamic-ai-2': 'Move them to a private space immediately. Use the "seek to understand" method by asking what exactly is blocking the shared deliverable.',
       '1': 'Conflict de-escalation steps using physical barriers and tone matching.',
       '3': 'I can confidently apply the tools in real situations',
       '4': 'I demonstrated the behaviors effectively',
       '7': 'Yes',
       '11': '4'
-    }
-  },
-  {
-    id: 'resp-004',
-    stage: 'end',
-    submittedAt: '2026-04-10T16:20:45Z',
-    answers: {
+  }},
+  { id: 'end-4', stage: 'end', submittedAt: '2026-04-10T16:20:45Z', answers: {
       'dynamic-ai-1': 'I would bring it up at the very next standup in front of everyone so the whole team knows the standard applied to everyone.',
-      'dynamic-ai-2': 'Tell them to stop acting like children and do their jobs. Provide them a direct command on how to split the deliverable.',
+      'dynamic-ai-2': 'Tell them to stop acting like children and provide them a direct command on how to split the deliverable.',
       '1': 'Honestly I didn\'t learn much that I didn\'t already know as a manager.',
       '3': 'I can confidently apply the tools in real situations',
       '4': 'I demonstrated the behaviors effectively',
       '7': 'No',
       '11': '1'
-    }
-  },
-  {
-    id: 'resp-005',
-    stage: 'end',
-    submittedAt: '2026-04-10T16:25:12Z',
-    answers: {
-      'dynamic-ai-1': 'Talk to them in private. Find out if there are childcare or transit issues. If so, move the standup time back 15 minutes for the whole team.',
-      'dynamic-ai-2': 'Gently interrupt them, suggest we go grab a coffee in the breakroom to discuss it quietly. Listen actively.',
-      '1': 'The "Red Flag vs Success" rubric concept was very good for framing my own behavior.',
+  }},
+  { id: 'end-5', stage: 'end', submittedAt: '2026-04-10T16:25:12Z', answers: {
+      'dynamic-ai-1': 'Talk to them in private. Find out if there are childcare or transit issues.',
+      'dynamic-ai-2': 'Gently suggest we go grab a coffee in the breakroom to discuss it quietly. Listen actively.',
+      '1': 'The "Red Flag vs Success" rubric concept was very good.',
       '3': 'I can confidently apply the tools in real situations',
       '4': 'I partially demonstrated them and know what to improve',
       '7': 'Yes',
       '11': '5'
-    }
-  }
+  }},
+
+  // ================= REFRESHER SESSION (30-day follow up) =================
+  { id: 'ref-1', stage: 'refresher', submittedAt: '2026-05-10T09:00:00Z', answers: {
+    '1': 'A developer and a designer were clashing over specs.',
+    '2': 'I pulled them into a room, used the resolution triangle, and let them both outline their critical path. They resolved it within 15 minutes.',
+    '7': 'Yes',
+    '11': '5'
+  }},
+  { id: 'ref-2', stage: 'refresher', submittedAt: '2026-05-11T11:15:00Z', answers: {
+    '1': 'I had to fire someone.',
+    '2': 'I didn\'t use the tools, I just relied on HR.',
+    '7': 'No',
+    '11': '2'
+  }},
+  { id: 'ref-3', stage: 'refresher', submittedAt: '2026-05-12T14:30:00Z', answers: {
+    '1': 'A junior team member was constantly missing sprint deadlines.',
+    '2': 'Rather than putting them on a PIP, I assumed positive intent and asked open-ended questions. Turns out they were caring for a sick parent. We altered their hours successfully.',
+    '7': 'Yes',
+    '11': '4'
+  }},
+  { id: 'ref-4', stage: 'refresher', submittedAt: '2026-05-13T10:00:00Z', answers: {
+    '1': 'None. Haven\'t had a chance to apply it.',
+    '7': 'Maybe',
+    '11': '3'
+  }},
+  { id: 'ref-5', stage: 'refresher', submittedAt: '2026-05-14T16:45:00Z', answers: {
+    '1': 'An aggressive vendor was making unfair demands.',
+    '2': 'I maintained tone control and used strategic silence to de-escalate their demands over the phone.',
+    '7': 'Yes',
+    '11': '5'
+  }}
 ];
 
 export const initialSessions: Session[] = [
@@ -192,7 +215,7 @@ export const initialSessions: Session[] = [
     date: '2026-04-10',
     companyTaught: 'ACME Corp',
     trainerNotes: 'Needs focus on remote communication.',
-    surveysCompleted: { pre: true, end: true, refresher: false },
+    surveysCompleted: { pre: true, end: true, refresher: true },
     surveys: {
       pre: JSON.parse(JSON.stringify(preSessionTemplate)),
       end: robustEndSessionTemplate,
