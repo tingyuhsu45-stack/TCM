@@ -79,7 +79,7 @@ export default function PublicSurvey() {
           {survey.questions.map((q, idx) => (
             <div key={q.id} className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
                <h3 className="font-semibold text-slate-900 text-lg mb-4 flex gap-3">
-                 <span className="text-indigo-600">{idx + 1}.</span> {q.text}
+                 <span className="text-indigo-600">{idx + 1}.</span> {q.text.replace(/^[A-Z]\d+\.\s*/, '').replace(/^Optional:\s*/, '')}
                  {q.required && <span className="text-red-500">*</span>}
                </h3>
 
@@ -108,7 +108,7 @@ export default function PublicSurvey() {
                          onChange={e => handleChoiceChange(q.id, e.target.value)}
                          className="mt-1 w-4 h-4 text-indigo-600 focus:ring-indigo-500"
                        />
-                       <span className="text-slate-700 font-medium">{opt}</span>
+                       <span className="text-slate-700 font-medium">{opt.replace(/^\[\d+\]\s*/, '')}</span>
                      </label>
                    ))}
                  </div>
@@ -127,7 +127,7 @@ export default function PublicSurvey() {
                            onChange={e => handleCheckboxChange(q.id, opt, e.target.checked)}
                            className="mt-1 w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500"
                          />
-                         <span className="text-slate-700 font-medium">{opt}</span>
+                         <span className="text-slate-700 font-medium">{opt.replace(/^\[\d+\]\s*/, '')}</span>
                        </label>
                      );
                    })}

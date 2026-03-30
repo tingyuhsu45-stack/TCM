@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { mockAiScenariosLibrary } from '../data/mockData';
-import { Check, X, FileOutput, FileText, UserCircle, Sparkles, BarChart2, MessageSquare, Star, ThumbsUp } from 'lucide-react';
-import type { Session } from '../types';
+import { Check, X, FileOutput, FileText, UserCircle, Sparkles, BarChart2, MessageSquare, Star, ThumbsUp, Target } from 'lucide-react';
+import type { Session, SurveyResponse } from '../types';
 
 export default function InsightsTab({ session }: { session: Session }) {
   const [activeView, setActiveView] = useState<'overview' | 'responses'>('overview');
@@ -54,6 +54,42 @@ export default function InsightsTab({ session }: { session: Session }) {
       validRecs++;
     }
   });
+
+  // --- LTEM 5 ASSESSMENT SCORING LOGIC ---
+  const getScore = (answer: string | string[]): number | null => {
+    if (typeof answer !== 'string') return null;
+    const match = answer.match(/^\[(\d+)\]/);
+    return match ? parseInt(match[1], 10) : null;
+  };
+
+  const getParticipantScore = (resp: SurveyResponse) => {
+    let earned = 0;
+    let possible = 0;
+    Object.entries(resp.answers).forEach(([, val]) => {
+      const s = getScore(val);
+      if (s !== null) {
+        earned += s;
+        possible += 3; // Given the rubric maps max choice to [3]
+      }
+    });
+    return { earned, possible };
+  };
+
+  // Calculate cohort average based on the currently filtered stage
+  let totalEarned = 0;
+  let totalPossible = 0;
+  let validParticipants = 0;
+
+  filteredResponses.forEach(r => {
+    const { earned, possible } = getParticipantScore(r);
+    if (possible > 0) {
+      totalEarned += earned;
+      totalPossible += possible;
+      validParticipants++;
+    }
+  });
+
+  const cohortScorePct = totalPossible > 0 ? Math.round((totalEarned / totalPossible) * 100) : 0;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
@@ -113,7 +149,7 @@ export default function InsightsTab({ session }: { session: Session }) {
              </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
              {/* QUANTITATIVE WIDGET 1: STAR RATING */}
              <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
                 <div>
@@ -180,6 +216,25 @@ export default function InsightsTab({ session }: { session: Session }) {
                    })}
                 </div>
              </div>
+
+             {/* QUANTITATIVE WIDGET 3: LTEM AVERAGE SCORE */}
+             <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                   <h3 className="font-bold text-slate-900 text-lg flex items-center gap-2 mb-1">
+                     <Target size={20} className="text-emerald-500" /> Assessment Score
+                   </h3>
+                   <p className="text-sm text-slate-500 mb-6">Average decision-making score</p>
+                </div>
+                
+                <div className="flex flex-col items-center justify-center flex-1 space-y-2 mb-4">
+                   <div className="text-6xl font-black text-emerald-500 tracking-tighter">
+                     {cohortScorePct}%
+                   </div>
+                   <div className="text-sm font-bold text-slate-400 uppercase tracking-widest">
+                     {totalEarned} / {totalPossible} Total Points
+                   </div>
+                </div>
+             </div>
           </div>
         </div>
       ) : (
@@ -230,6 +285,20 @@ export default function InsightsTab({ session }: { session: Session }) {
                            <p className="text-xs text-slate-500 mt-0.5">{new Date(resp.submittedAt).toLocaleDateString()} • {new Date(resp.submittedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
                          </div>
                        </div>
+
+                       {/* INDIVIDUAL SCORE */}
+                       {(() => {
+                         const score = getParticipantScore(resp);
+                         if (score.possible > 0) {
+                           return (
+                             <div className="text-right">
+                               <div className="text-xl font-black text-emerald-500">{score.earned}/{score.possible}</div>
+                               <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Score</div>
+                             </div>
+                           );
+                         }
+                         return null;
+                       })()}
                      </li>
                    ))}
                 </ul>

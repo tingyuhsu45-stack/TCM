@@ -182,14 +182,14 @@ export default function SessionDetail() {
                           <span className="bg-slate-100 text-slate-500 text-[11px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Q{idx + 1}</span>
                           <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">{q.type}</span>
                         </div>
-                        <p className="font-semibold text-slate-900 leading-relaxed text-base">{q.text}</p>
+                        <p className="font-semibold text-slate-900 leading-relaxed text-base">{q.text.replace(/^[A-Z]\d+\.\s*/, '').replace(/^Optional:\s*/, '')}</p>
                         
                         {q.options && q.options.length > 0 && (
                           <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {q.options.map((opt, i) => (
                               <div key={i} className="flex items-start gap-3 text-sm text-slate-700 bg-slate-50/80 p-3 rounded-xl border border-slate-100 hover:bg-slate-50 transition-colors">
                                  <div className={`mt-0.5 w-4 h-4 shrink-0 border border-slate-300 bg-white ${q.type === 'choice' ? 'rounded-full' : 'rounded'}`} />
-                                 <span>{opt}</span>
+                                 <span>{opt.replace(/^\[\d+\]\s*/, '')}</span>
                               </div>
                             ))}
                           </div>
