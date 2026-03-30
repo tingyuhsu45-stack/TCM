@@ -65,11 +65,20 @@ export default function InsightsTab({ session }: { session: Session }) {
   const getParticipantScore = (resp: SurveyResponse) => {
     let earned = 0;
     let possible = 0;
-    Object.entries(resp.answers).forEach(([, val]) => {
-      const s = getScore(val);
-      if (s !== null) {
-        earned += s;
-        possible += 3; // Given the rubric maps max choice to [3]
+    const survey = session.surveys[resp.stage];
+    
+    Object.entries(resp.answers).forEach(([qId, val]) => {
+      const q = survey?.questions.find(x => x.id === qId);
+      if (!q || !q.options) return;
+
+      // We only score evaluation questions (they uniquely use a scale that drops to [0])
+      const isEvaluation = q.options.some(opt => opt.startsWith('[0]'));
+      if (isEvaluation) {
+        const s = getScore(val);
+        if (s !== null) {
+          earned += s;
+          possible += 3; // The max score on evaluation questions is [3]
+        }
       }
     });
     return { earned, possible };

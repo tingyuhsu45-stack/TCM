@@ -239,6 +239,8 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     submittedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     answers: { 
       '1': '[3] Meet with Priya privately, listen to her account, validate her frustration, and ask what resolution she would consider fair before taking any steps', 
+      '2': '[2] Document the specific errors and instances of disengagement in an email to Aisha, and request a written improvement plan from her within one week', 
+      '3': '[3] I manage most aspects but still struggle with some', 
       'v': '[4] Highly valuable: I gained practical tools I will use immediately',
       '7': 'Yes',
       '11': '4' 
@@ -250,6 +252,8 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     submittedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
     answers: { 
       '1': '[1] Have a quiet word with Daniel and tell him to be more respectful of Priya\'s contributions in future meetings',
+      '2': '[0] Ask one of her closer colleagues to have a friendly word with her about picking up the pace, to keep it informal and avoid putting her on the spot',
+      '3': '[2] I often feel unsure or avoid these situations', 
       'v': '[3] Valuable: I learned useful concepts I expect to apply over time',
       '7': 'No',
       '11': '2' 
