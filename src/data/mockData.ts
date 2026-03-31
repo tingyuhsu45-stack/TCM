@@ -63,7 +63,10 @@ export const preSessionTemplate: SurveyTemplate = {
     { id: '8', type: 'text', text: 'B6. Is there anything else the trainer needs to know to ensure this course meets your needs?' },
     { id: '9', type: 'text', text: 'Optional: Would you like to share a testimonial about your TCM experience?' },
     { id: '10', type: 'choice', text: 'Optional: May TCM use your response in marketing materials?', options: ['Yes, happy to use', 'No, please do not use'] },
-    { id: '11', type: 'choice', text: 'Optional: Would you like information about other TCM services?', options: ['Yes, please get in touch', 'No, thank you'] }
+    { id: '11', type: 'choice', text: 'Optional: Would you like information about other TCM services?', options: ['Yes, please get in touch', 'No, thank you'] },
+    { id: '12', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: [
+      'The Investigation Company', 'The Mediation Company', 'Resolution Framework', 'The TCM Academy', 'The People and Culture Association', 'Engage Leadership', 'Engage Coaching', 'People and Culture', 'Other'
+    ] }
   ]
 };
 
@@ -143,7 +146,10 @@ export const refresherTemplate: SurveyTemplate = {
     { id: '7', type: 'text', text: 'B5. Since the training, what have you done differently at work?' },
     { id: '8', type: 'text', text: 'B6. Have you noticed any measurable changes in your team or work environment that may relate to what you learned?' },
     { id: '9', type: 'text', text: 'B7. What support, tools, or conditions helped (or would have helped) you apply what you learned?' },
-    { id: '10', type: 'text', text: 'B8. What improvements would make this course even more useful?' }
+    { id: '10', type: 'text', text: 'B8. What improvements would make this course even more useful?' },
+    { id: '11', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: [
+      'The Investigation Company', 'The Mediation Company', 'Resolution Framework', 'The TCM Academy', 'The People and Culture Association', 'Engage Leadership', 'Engage Coaching', 'People and Culture', 'Other'
+    ] }
   ]
 };
 
