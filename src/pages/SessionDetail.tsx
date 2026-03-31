@@ -30,9 +30,28 @@ export default function SessionDetail() {
 
   const currentSurvey = activeTab !== 'insights' ? session.surveys[activeTab] : null;
 
-  const handleCopyLink = () => {
+  const handleCopyLink = (text: string) => {
+    navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getSurveyLink = () => {
+    if (session.id === 'b6e83') {
+      if (activeTab === 'pre') return 'https://docs.google.com/forms/d/e/1FAIpQLSdDI75-MhlAM9jwZ7-oO87XhBoZB5eZZJ8TG0P6jZvAyWNX9g/viewform';
+      if (activeTab === 'end') return 'https://docs.google.com/forms/d/e/1FAIpQLSe7qsj1IodX2dTctaRVznOJ_c5jGOx3ioQ7dO1fG5pj8g5lmg/viewform';
+      if (activeTab === 'refresher') return 'https://docs.google.com/forms/d/e/1FAIpQLSf8YkYU6WdRu0XmW3qi1NnV1JoY6Ij3lJRu6MTrQS7W6d6xZQ/viewform';
+    }
+    return `${window.location.origin}/survey/${session.id}/${activeTab}`;
+  };
+
+  const getQRCodeImage = () => {
+    if (session.id === 'b6e83') {
+      if (activeTab === 'pre') return '/qr_pre.png';
+      if (activeTab === 'end') return '/qr_end.png';
+      if (activeTab === 'refresher') return '/qr_refresher.png';
+    }
+    return null;
   };
 
   const handleDeleteQuestion = (qId: string) => {
@@ -281,7 +300,7 @@ export default function SessionDetail() {
         </div>
       )}
 
-      {/* QR Code Modal Simulation */}
+      {/* QR Code Modal */}
       {showQRModal && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in">
            <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
@@ -293,22 +312,23 @@ export default function SessionDetail() {
                  <button onClick={() => setShowQRModal(false)} className="text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-200 transition-colors"><X size={20} /></button>
               </div>
               <div className="p-8 flex flex-col items-center justify-center space-y-6">
-                 <div className="w-56 h-56 bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex items-center justify-center hover:border-indigo-300 transition-colors group relative overflow-hidden">
-                    <QrCode size={140} className="text-slate-300 group-hover:scale-110 transition-transform duration-500 ease-out" />
-                    <div className="absolute inset-x-0 bottom-4 text-center">
-                       <span className="bg-white/80 backdrop-blur-sm text-xs font-semibold px-3 py-1 rounded-full text-slate-700 shadow-sm border border-slate-100">Simulated QR Code</span>
-                    </div>
+                 <div className={`w-56 h-56 bg-slate-50 border-2 ${getQRCodeImage() ? 'border-indigo-600 bg-white' : 'border-dashed border-slate-200'} rounded-3xl flex items-center justify-center hover:border-indigo-300 transition-colors group relative overflow-hidden shadow-inner`}>
+                    {getQRCodeImage() ? (
+                      <img src={getQRCodeImage()!} alt="Survey QR Code" className="w-full h-full object-contain p-2 animate-in zoom-in duration-500" />
+                    ) : (
+                      <QrCode size={140} className="text-slate-300 group-hover:scale-110 transition-transform duration-500 ease-out" />
+                    )}
                  </div>
                  <div className="text-center">
-                   <p className="font-bold text-slate-900 text-lg">{activeTab.toUpperCase()} Quiz Ready!</p>
-                   <p className="text-sm text-slate-500 mt-1 max-w-[250px] mx-auto">Trainees can scan this code from your presentation to begin.</p>
+                   <p className="font-bold text-slate-900 text-lg">{activeTab.toUpperCase()} Survey Live</p>
+                   <p className="text-sm text-slate-500 mt-1 max-w-[250px] mx-auto">Trainees can scan this code to begin the evaluation.</p>
                  </div>
 
                  <div className="w-full flex items-center gap-2 mt-2 p-1.5 bg-slate-50 rounded-xl border border-slate-200 shadow-inner">
                    <div className="flex-1 bg-transparent text-[13px] font-medium text-slate-600 px-3 outline-none overflow-hidden text-ellipsis whitespace-nowrap pl-2 select-all">
-                     {`bluemorning.com/q/${session.id}/${activeTab}`}
+                     {getSurveyLink()}
                    </div>
-                   <button onClick={handleCopyLink} className="shrink-0 bg-white shadow-sm border border-slate-200 hover:border-indigo-300 text-slate-700 hover:text-indigo-600 px-3.5 py-2.5 rounded-lg font-semibold text-[13px] transition-all flex items-center gap-2 focus:ring-2 focus:ring-indigo-500 outline-none">
+                   <button onClick={() => handleCopyLink(getSurveyLink())} className="shrink-0 bg-white shadow-sm border border-slate-200 hover:border-indigo-300 text-slate-700 hover:text-indigo-600 px-3.5 py-2.5 rounded-lg font-semibold text-[13px] transition-all flex items-center gap-2 focus:ring-2 focus:ring-indigo-500 outline-none">
                      {copied ? <CheckCircle2 size={16} className="text-emerald-500" /> : <Copy size={16} />} 
                      {copied ? 'Copied!' : 'Copy'}
                    </button>
