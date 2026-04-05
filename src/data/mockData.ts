@@ -63,7 +63,6 @@ export const preSessionTemplate: SurveyTemplate = {
     { id: '8', type: 'text', text: 'B6. Is there anything else the trainer needs to know to ensure this course meets your needs?' },
     { id: '9', type: 'text', text: 'Optional: Would you like to share a testimonial about your TCM experience?' },
     { id: '10', type: 'choice', text: 'Optional: May TCM use your response in marketing materials?', options: ['Yes, happy to use', 'No, please do not use'] },
-    { id: '11', type: 'choice', text: 'Optional: Would you like information about other TCM services?', options: ['Yes, please get in touch', 'No, thank you'] },
     { id: '12', type: 'checkbox', text: 'Please tick in the other TCM services you would be interested in:', options: [
       'The Investigation Company', 'The Mediation Company', 'Resolution Framework', 'The TCM Academy', 'The People and Culture Association', 'Engage Leadership', 'Engage Coaching', 'People and Culture', 'Other'
     ] }
@@ -195,6 +194,48 @@ export const mockPopulatedResponses: SurveyResponse[] = [
       '5': '[3] I manage most aspects but still struggle with some' 
     }
   },
+  {
+    id: 'resp-pre-3',
+    stage: 'pre',
+    participantName: 'David Chen',
+    participantEmail: 'dchen@acme.corp',
+    submittedAt: new Date(Date.now() - 33 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: {
+      '1': '[1] Speak to Tom privately and ask him to apologise to Sarah to prevent the situation from escalating',
+      '2': '[0] Raise it at the next team meeting as a general reminder about punctuality and deadlines, without naming James, to avoid an awkward conversation',
+      '3': 'My manager said I need to improve how I handle team conflict.',
+      '4': 'A team member complained about another in front of the whole office. I told them both to focus on their work.',
+      '5': '[2] I often feel unsure or avoid these situations'
+    }
+  },
+  {
+    id: 'resp-pre-4',
+    stage: 'pre',
+    participantName: 'Sam Wilson',
+    participantEmail: 'samw@acme.corp',
+    submittedAt: new Date(Date.now() - 33 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: {
+      '1': '[2] Arrange a meeting with both Sarah and Tom together so they can talk it through, and mediate the conversation yourself',
+      '2': '[1] Mention it casually at your next regular catch-up and hope the issue resolves itself once he knows you have noticed',
+      '3': 'I want to build confidence in difficult conversations.',
+      '4': 'Had to tell a team member their work quality was slipping — I kept it brief and moved on quickly. They seemed surprised.',
+      '5': '[2] I often feel unsure or avoid these situations'
+    }
+  },
+  {
+    id: 'resp-pre-5',
+    stage: 'pre',
+    participantName: 'Jordan Lee',
+    participantEmail: 'jlee@acme.corp',
+    submittedAt: new Date(Date.now() - 33 * 24 * 60 * 60 * 1000).toISOString(),
+    answers: {
+      '1': '[0] Tell Sarah that disagreements happen in meetings and she should try not to take professional feedback personally',
+      '2': '[1] Mention it casually at your next regular catch-up and hope the issue resolves itself once he knows you have noticed',
+      '3': 'Mandatory — HR enrolled me.',
+      '4': 'A colleague and I stopped speaking after a disagreement about project ownership. I avoided the topic until it blew over.',
+      '5': '[1] I have little or no experience with these situations'
+    }
+  },
   // End session answers mapped to the NEW template
   {
     id: 'resp-end-1',
@@ -294,6 +335,70 @@ export const mockPopulatedResponses: SurveyResponse[] = [
       '5': 'I used the resolution framework to handle a dispute between QA and dev teams without resorting to HR.', 
       '6': 'Hard to remember the exact framework steps when stressed.', 
       '7': 'I count to 3 before responding to aggressive emails.' 
+    }
+  },
+  {
+    id: 'resp-ref-2',
+    stage: 'refresher',
+    participantName: 'Mia Rojas',
+    participantEmail: 'mia.rojas@acme.corp',
+    submittedAt: new Date().toISOString(),
+    answers: {
+      '1': '[3] Sit down privately with Marcus, let him share his full perspective, recognise how the experience affected him, and explore together what a constructive resolution might look like before involving anyone else',
+      '2': '[3] Arrange a private, unhurried conversation with Liam, begin by genuinely asking how he is, and create space for him to share what is going on before discussing the specific work concerns',
+      '3': '[4] I handle these situations effectively and get consistent positive results',
+      '4': '[4] Regularly: I use what I learned at least weekly',
+      '5': 'When two colleagues had a communication breakdown over a delayed project, I set up a facilitated conversation using the structured empathy approach. Both left the meeting feeling heard and we agreed on a revised timeline.',
+      '6': 'Nothing felt difficult once I practised it. The hardest part was initiating the first conversation.',
+      '7': 'I proactively check in with team members individually rather than waiting for issues to escalate.'
+    }
+  },
+  {
+    id: 'resp-ref-3',
+    stage: 'refresher',
+    participantName: 'David Chen',
+    participantEmail: 'dchen@acme.corp',
+    submittedAt: new Date().toISOString(),
+    answers: {
+      '1': '[2] Bring Marcus and Elena together for a structured conversation where each can share their view of what happened, and guide them toward an agreement on how to work together going forward',
+      '2': '[2] Put together a summary of the missed deadlines and reduced participation, share it with Liam by email, and ask him to propose a plan to get back on track within the next five working days',
+      '3': '[3] I manage most aspects but still struggle with some',
+      '4': '[2] Rarely: I have applied it once or twice',
+      '5': 'I tried to mediate a disagreement between two analysts. I brought them together and tried to listen to both sides, though I still defaulted to giving a verdict at the end rather than letting them reach one.',
+      '6': 'It feels unnatural to hold back from making decisions — I keep wanting to resolve things quickly rather than letting the process work.',
+      '7': 'I am trying to ask more questions before jumping to conclusions.'
+    }
+  },
+  {
+    id: 'resp-ref-4',
+    stage: 'refresher',
+    participantName: 'Sam Wilson',
+    participantEmail: 'samw@acme.corp',
+    submittedAt: new Date().toISOString(),
+    answers: {
+      '1': '[3] Sit down privately with Marcus, let him share his full perspective, recognise how the experience affected him, and explore together what a constructive resolution might look like before involving anyone else',
+      '2': '[3] Arrange a private, unhurried conversation with Liam, begin by genuinely asking how he is, and create space for him to share what is going on before discussing the specific work concerns',
+      '3': '[3] I manage most aspects but still struggle with some',
+      '4': '[3] Occasionally: I have applied it several times in the past few months',
+      '5': 'A new team member was struggling to integrate and clashing with a senior colleague. I had separate conversations with each of them first, then facilitated a joint discussion. The tension has significantly reduced.',
+      '6': 'Staying neutral during high-emotion conversations is still challenging — I notice I want to take sides.',
+      '7': 'I schedule regular one-to-ones and use them to surface small issues before they grow.'
+    }
+  },
+  {
+    id: 'resp-ref-5',
+    stage: 'refresher',
+    participantName: 'Jordan Lee',
+    participantEmail: 'jlee@acme.corp',
+    submittedAt: new Date().toISOString(),
+    answers: {
+      '1': '[2] Bring Marcus and Elena together for a structured conversation where each can share their view of what happened, and guide them toward an agreement on how to work together going forward',
+      '2': '[1] Decide to wait and see if things improve naturally over the next sprint cycle, since raising it now might add pressure when he is already struggling',
+      '3': '[2] I often feel unsure or avoid these situations',
+      '4': '[2] Rarely: I have applied it once or twice',
+      '5': 'A colleague approached me about a dispute with another team. I listened and sympathised but I was not sure how to move forward, so I suggested they speak to HR instead.',
+      '6': 'I still feel uncomfortable initiating difficult conversations. I worry about making things worse.',
+      '7': 'I am more aware now of when conflicts are brewing, even if I am still not confident in addressing them directly.'
     }
   }
 ];

@@ -137,7 +137,7 @@ export default function SessionDetail() {
               <h1 className="text-3xl font-bold tracking-tight text-slate-900">{session.courseName}</h1>
               <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-full">{session.companyTaught || 'Public'}</span>
             </div>
-            <p className="text-slate-500 mt-2">Manage the 3 survey stages for this training cohort.</p>
+            <p className="text-slate-500 mt-2">Manage the 3 form stages for this training cohort.</p>
           </div>
           
           <div className="flex gap-3">
@@ -308,20 +308,20 @@ export default function SessionDetail() {
                  <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
                     <QrCode size={20} className="text-indigo-600" />
                  </div>
-                 <h3 className="text-lg font-bold text-slate-900 flex-1 ml-3">Distribute Survey</h3>
+                 <h3 className="text-lg font-bold text-slate-900 flex-1 ml-3">Distribute Form</h3>
                  <button onClick={() => setShowQRModal(false)} className="text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-200 transition-colors"><X size={20} /></button>
               </div>
               <div className="p-8 flex flex-col items-center justify-center space-y-6">
                  <div className={`w-56 h-56 bg-slate-50 border-2 ${getQRCodeImage() ? 'border-indigo-600 bg-white' : 'border-dashed border-slate-200'} rounded-3xl flex items-center justify-center hover:border-indigo-300 transition-colors group relative overflow-hidden shadow-inner`}>
                     {getQRCodeImage() ? (
-                      <img src={getQRCodeImage()!} alt="Survey QR Code" className="w-full h-full object-contain p-2 animate-in zoom-in duration-500" />
+                      <img src={getQRCodeImage()!} alt="Form QR Code" className="w-full h-full object-contain p-2 animate-in zoom-in duration-500" />
                     ) : (
                       <QrCode size={140} className="text-slate-300 group-hover:scale-110 transition-transform duration-500 ease-out" />
                     )}
                  </div>
                  <div className="text-center">
-                   <p className="font-bold text-slate-900 text-lg">{activeTab.toUpperCase()} Survey Live</p>
-                   <p className="text-sm text-slate-500 mt-1 max-w-[250px] mx-auto">Trainees can scan this code to begin the evaluation.</p>
+                   <p className="font-bold text-slate-900 text-lg">{activeTab.toUpperCase()} Form Live</p>
+                   <p className="text-sm text-slate-500 mt-1 max-w-[250px] mx-auto">Trainees can scan this code to begin the form.</p>
                  </div>
 
                  <div className="w-full flex items-center gap-2 mt-2 p-1.5 bg-slate-50 rounded-xl border border-slate-200 shadow-inner">

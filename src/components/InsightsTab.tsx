@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { mockAiScenariosLibrary } from '../data/mockData';
-import { Check, X, FileOutput, FileText, UserCircle, Sparkles, BarChart2, MessageSquare, Star, ThumbsUp, Target } from 'lucide-react';
+import { Check, X, FileOutput, FileText, UserCircle, Sparkles, BarChart2, MessageSquare, Star, ThumbsUp, Target, TrendingUp, TrendingDown, Minus, ArrowRight } from 'lucide-react';
 import type { Session, SurveyResponse } from '../types';
 
 export default function InsightsTab({ session }: { session: Session }) {
-  const [activeView, setActiveView] = useState<'overview' | 'responses'>('overview');
+  const [activeView, setActiveView] = useState<'overview' | 'responses' | 'progress'>('overview');
   const [stageFilter, setStageFilter] = useState<'pre' | 'end' | 'refresher'>('end');
   const [selectedResponseIdx, setSelectedResponseIdx] = useState(0);
 
@@ -100,6 +100,103 @@ export default function InsightsTab({ session }: { session: Session }) {
 
   const cohortScorePct = totalPossible > 0 ? Math.round((totalEarned / totalPossible) * 100) : 0;
 
+  // --- PROGRESS TRACKER LOGIC ---
+  // Get unique trainee names across all responses
+  const traineeNames = Array.from(new Set(allResponses.map(r => r.participantName).filter(Boolean))) as string[];
+
+  interface TraineeProgress {
+    name: string;
+    email: string;
+    pre: { score: number | null; pct: number | null };
+    end: { score: number | null; pct: number | null };
+    refresher: { score: number | null; pct: number | null };
+    trend: 'improving' | 'stable' | 'declining' | 'incomplete';
+    narrative: string;
+  }
+
+  const traineeProgressData: TraineeProgress[] = traineeNames.map(name => {
+    const getStageScore = (stage: 'pre' | 'end' | 'refresher') => {
+      const resp = allResponses.find(r => r.participantName === name && r.stage === stage);
+      if (!resp) return { score: null, pct: null };
+      const { earned, possible } = getParticipantScore(resp);
+      if (possible === 0) return { score: null, pct: null };
+      return { score: earned, pct: Math.round((earned / possible) * 100) };
+    };
+
+    const pre = getStageScore('pre');
+    const end = getStageScore('end');
+    const refresher = getStageScore('refresher');
+
+    const email = allResponses.find(r => r.participantName === name)?.participantEmail || '';
+
+    // Determine trend based on available data
+    const scores = [pre.pct, end.pct, refresher.pct].filter(s => s !== null) as number[];
+    let trend: TraineeProgress['trend'] = 'incomplete';
+    if (scores.length >= 2) {
+      const first = scores[0];
+      const last = scores[scores.length - 1];
+      const diff = last - first;
+      if (diff >= 10) trend = 'improving';
+      else if (diff <= -10) trend = 'declining';
+      else trend = 'stable';
+    }
+
+    // Generate narrative
+    const narrativeParts: string[] = [];
+    if (pre.pct !== null && end.pct !== null) {
+      const change = end.pct - pre.pct;
+      if (change > 20) narrativeParts.push(`Showed strong gains between Pre-Form (${pre.pct}%) and Learner Reflection (${end.pct}%), a +${change}pp improvement.`);
+      else if (change > 0) narrativeParts.push(`Improved from Pre-Form (${pre.pct}%) to Learner Reflection (${end.pct}%).`);
+      else if (change === 0) narrativeParts.push(`Assessment score held steady from Pre-Form to Learner Reflection at ${pre.pct}%.`);
+      else narrativeParts.push(`Score dipped from Pre-Form (${pre.pct}%) to Learner Reflection (${end.pct}%). May need additional coaching.`);
+    }
+    if (refresher.pct !== null) {
+      if (end.pct !== null) {
+        const change = refresher.pct - end.pct;
+        if (change >= 0) narrativeParts.push(`30-day Refresher shows sustained retention at ${refresher.pct}%.`);
+        else narrativeParts.push(`30-day Refresher shows a drop to ${refresher.pct}% — application in practice may need reinforcement.`);
+      } else {
+        narrativeParts.push(`30-day Refresher score: ${refresher.pct}%.`);
+      }
+    }
+    if (narrativeParts.length === 0) narrativeParts.push('Awaiting data from additional form stages.');
+
+    return { name, email, pre, end, refresher, trend, narrative: narrativeParts.join(' ') };
+  });
+
+  const ScorePill = ({ pct }: { pct: number | null }) => {
+    if (pct === null) return <span className="text-slate-300 text-sm font-medium italic">—</span>;
+    const color = pct >= 75 ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : pct >= 50 ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-rose-100 text-rose-800 border-rose-200';
+    return (
+      <span className={`inline-flex items-center justify-center min-w-[52px] px-3 py-1 rounded-full text-sm font-bold border ${color}`}>
+        {pct}%
+      </span>
+    );
+  };
+
+  const TrendBadge = ({ trend }: { trend: TraineeProgress['trend'] }) => {
+    if (trend === 'improving') return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200">
+        <TrendingUp size={12} /> Improving
+      </span>
+    );
+    if (trend === 'declining') return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200">
+        <TrendingDown size={12} /> Declining
+      </span>
+    );
+    if (trend === 'stable') return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">
+        <Minus size={12} /> Stable
+      </span>
+    );
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-500 text-xs font-bold border border-indigo-100">
+        <ArrowRight size={12} /> In Progress
+      </span>
+    );
+  };
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500 pb-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -111,16 +208,22 @@ export default function InsightsTab({ session }: { session: Session }) {
           <p className="text-slate-500 mt-1">Review qualitative LTEM responses and AI-powered performance data.</p>
         </div>
         
-        <div className="bg-slate-100 p-1 rounded-xl flex items-center">
+        <div className="bg-slate-100 p-1 rounded-xl flex items-center flex-wrap gap-1">
            <button 
              onClick={() => setActiveView('overview')}
-             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-all ${activeView === 'overview' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${activeView === 'overview' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
            >
              <BarChart2 size={16} /> Cohort Overview
            </button>
            <button 
+             onClick={() => setActiveView('progress')}
+             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${activeView === 'progress' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+           >
+             <TrendingUp size={16} /> Progress Tracker
+           </button>
+           <button 
              onClick={() => setActiveView('responses')}
-             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-all ${activeView === 'responses' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
+             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${activeView === 'responses' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}`}
            >
              <MessageSquare size={16} /> Raw Responses
            </button>
@@ -133,7 +236,7 @@ export default function InsightsTab({ session }: { session: Session }) {
                <FileText size={32} className="text-slate-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 mb-2">No Responses Yet</h3>
-            <p className="text-slate-500 max-w-sm mx-auto">Once trainees complete the QR code surveys for this session, their answers will appear here in real-time.</p>
+            <p className="text-slate-500 max-w-sm mx-auto">Once trainees complete the QR code forms for this session, their answers will appear here in real-time.</p>
         </div>
       ) : activeView === 'overview' ? (
         // ================= OVERVIEW TAB =================
@@ -145,7 +248,7 @@ export default function InsightsTab({ session }: { session: Session }) {
              <div className="relative z-10">
                <h2 className="text-xl font-bold flex items-center gap-2 mb-4">
                  <Sparkles className="text-indigo-300" size={24} /> 
-                 LTEM Tier 5 & 6 Executive Summary
+                 LTEM Tier 5 &amp; 6 Executive Summary
                </h2>
                <div className="text-indigo-100 text-lg leading-relaxed space-y-4">
                  <p>
@@ -246,6 +349,98 @@ export default function InsightsTab({ session }: { session: Session }) {
              </div>
           </div>
         </div>
+
+      ) : activeView === 'progress' ? (
+        // ================= PROGRESS TRACKER TAB =================
+        <div className="space-y-6 animate-in slide-in-from-bottom-4">
+          
+          {/* Header card */}
+          <div className="bg-gradient-to-r from-violet-900 via-indigo-800 to-indigo-700 rounded-3xl p-7 text-white shadow-xl relative overflow-hidden">
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full blur-3xl -ml-10 -mb-10"></div>
+            <div className="relative z-10">
+              <h3 className="text-xl font-bold flex items-center gap-2 mb-2">
+                <TrendingUp size={22} className="text-violet-300" /> Trainee Progress Tracker
+              </h3>
+              <p className="text-indigo-200 leading-relaxed text-sm max-w-2xl">
+                Compare each trainee's decision-making assessment score across all three form stages — Pre-Session, Learner Reflection, and 30-Day Refresher — to identify who is embedding learning and who needs additional support.
+              </p>
+              <div className="mt-4 flex gap-4 flex-wrap text-xs">
+                <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full font-semibold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> ≥75% Strong
+                </span>
+                <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full font-semibold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> 50–74% Developing
+                </span>
+                <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full font-semibold">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span> &lt;50% Needs Support
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Column headers */}
+          <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-6 text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <span>Trainee</span>
+            <span className="text-center">Pre-Session</span>
+            <span className="text-center">Learner Reflection</span>
+            <span className="text-center">30-Day Refresher</span>
+            <span className="text-center">Overall Trend</span>
+          </div>
+
+          {/* Trainee rows */}
+          <div className="space-y-4">
+            {traineeProgressData.map((t) => (
+              <div key={t.name} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 p-5 items-center">
+                  {/* Name */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
+                      <UserCircle size={24} className="text-indigo-500" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900 text-sm">{t.name}</p>
+                      <p className="text-xs text-slate-400 mt-0.5">{t.email}</p>
+                    </div>
+                  </div>
+
+                  {/* Pre */}
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">Pre-Session</span>
+                    <ScorePill pct={t.pre.pct} />
+                    {t.pre.score !== null && <span className="text-[10px] text-slate-400">{t.pre.score}/{t.pre.score !== null ? (t.pre.pct !== null ? Math.round(t.pre.score / (t.pre.pct / 100)) : '?') : '?'} pts</span>}
+                  </div>
+
+                  {/* End */}
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">Learner Reflection</span>
+                    <ScorePill pct={t.end.pct} />
+                    {t.end.score !== null && <span className="text-[10px] text-slate-400">{t.end.score} pts</span>}
+                  </div>
+
+                  {/* Refresher */}
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">30-Day Refresher</span>
+                    <ScorePill pct={t.refresher.pct} />
+                    {t.refresher.score !== null && <span className="text-[10px] text-slate-400">{t.refresher.score} pts</span>}
+                  </div>
+
+                  {/* Trend */}
+                  <div className="flex justify-center">
+                    <TrendBadge trend={t.trend} />
+                  </div>
+                </div>
+
+                {/* Narrative */}
+                <div className="px-5 pb-4 border-t border-slate-50">
+                  <p className="text-xs text-slate-500 leading-relaxed pt-3">
+                    <span className="font-bold text-slate-600">AI Insight: </span>{t.narrative}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       ) : (
         // ================= RAW RESPONSES TAB =================
         <div className="flex flex-col lg:flex-row gap-6 animate-in slide-in-from-bottom-4">
@@ -255,7 +450,7 @@ export default function InsightsTab({ session }: { session: Session }) {
              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-[700px]">
                 
                 <div className="p-4 bg-slate-50 border-b border-slate-100">
-                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Filter by Survey Phase</h4>
+                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Filter by Form Phase</h4>
                   <div className="flex flex-col gap-2">
                     <button 
                       onClick={() => { setStageFilter('pre'); setSelectedResponseIdx(0); }}
@@ -322,7 +517,7 @@ export default function InsightsTab({ session }: { session: Session }) {
                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden min-h-[700px]">
                   <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                      <h2 className="text-lg font-bold text-slate-900 capitalize flex items-center gap-2">
-                       {selectedResponse.stage} Survey Response
+                       {selectedResponse.stage} Form Response
                      </h2>
                      <button className="flex items-center gap-1.5 text-sm font-medium text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors">
                        <FileOutput size={14} /> Export CSV
