@@ -520,8 +520,8 @@ export default function InsightsTab({ session }: { session: Session }) {
              {selectedResponse ? (
                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden min-h-[700px]">
                   <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                     <h2 className="text-lg font-bold text-slate-900 capitalize flex items-center gap-2">
-                       {selectedResponse.stage} Form Response
+                     <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                       {{ pre: 'What You Know', end: 'What You Learnt', refresher: 'What You Did' }[selectedResponse.stage as 'pre'|'end'|'refresher']}
                      </h2>
                      <button className="flex items-center gap-1.5 text-sm font-medium text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors">
                        <FileOutput size={14} /> Export CSV
