@@ -144,18 +144,18 @@ export default function InsightsTab({ session }: { session: Session }) {
     const narrativeParts: string[] = [];
     if (pre.pct !== null && end.pct !== null) {
       const change = end.pct - pre.pct;
-      if (change > 20) narrativeParts.push(`Showed strong gains between Pre-Form (${pre.pct}%) and Learner Reflection (${end.pct}%), a +${change}pp improvement.`);
-      else if (change > 0) narrativeParts.push(`Improved from Pre-Form (${pre.pct}%) to Learner Reflection (${end.pct}%).`);
-      else if (change === 0) narrativeParts.push(`Assessment score held steady from Pre-Form to Learner Reflection at ${pre.pct}%.`);
-      else narrativeParts.push(`Score dipped from Pre-Form (${pre.pct}%) to Learner Reflection (${end.pct}%). May need additional coaching.`);
+      if (change > 20) narrativeParts.push(`Showed strong gains between What You Know (${pre.pct}%) and What You Learnt (${end.pct}%), a +${change}pp improvement.`);
+      else if (change > 0) narrativeParts.push(`Improved from What You Know (${pre.pct}%) to What You Learnt (${end.pct}%).`);
+      else if (change === 0) narrativeParts.push(`Assessment score held steady from What You Know to What You Learnt at ${pre.pct}%.`);
+      else narrativeParts.push(`Score dipped from What You Know (${pre.pct}%) to What You Learnt (${end.pct}%). May need additional coaching.`);
     }
     if (refresher.pct !== null) {
       if (end.pct !== null) {
         const change = refresher.pct - end.pct;
-        if (change >= 0) narrativeParts.push(`30-day Refresher shows sustained retention at ${refresher.pct}%.`);
-        else narrativeParts.push(`30-day Refresher shows a drop to ${refresher.pct}% — application in practice may need reinforcement.`);
+        if (change >= 0) narrativeParts.push(`What You Did shows sustained retention at ${refresher.pct}%.`);
+        else narrativeParts.push(`What You Did shows a drop to ${refresher.pct}% — application in practice may need reinforcement.`);
       } else {
-        narrativeParts.push(`30-day Refresher score: ${refresher.pct}%.`);
+        narrativeParts.push(`What You Did score: ${refresher.pct}%.`);
       }
     }
     if (narrativeParts.length === 0) narrativeParts.push('Awaiting data from additional form stages.');
@@ -254,7 +254,7 @@ export default function InsightsTab({ session }: { session: Session }) {
                    Overall, the cohort demonstrated a <strong className="text-white">high level of theoretical proficiency</strong> in conflict de-escalation, specifically citing the "structured empathy framework" and "resolution triangle" as key takeaways. Analyzing the real-world simulated scenarios, <strong className="text-emerald-300">80% of trainees</strong> correctly identified private 1-on-1 interventions as the correct primary action.
                  </p>
                  <p>
-                   <strong className="text-amber-300">Areas for Improvement:</strong> The 30-day Refresher data indicates that while intent remains high, practical application drops when participants are faced with rapid, high-pressure demands (e.g. from vendors or senior stakeholders). We recommend focusing the next coaching block on high-pressure tactical roleplays.
+                   <strong className="text-amber-300">Areas for Improvement:</strong> The What You Did data indicates that while intent remains high, practical application drops when participants are faced with rapid, high-pressure demands (e.g. from vendors or senior stakeholders). We recommend focusing the next coaching block on high-pressure tactical roleplays.
                  </p>
                </div>
              </div>
@@ -361,7 +361,7 @@ export default function InsightsTab({ session }: { session: Session }) {
                 <TrendingUp size={22} className="text-violet-300" /> Trainee Progress Tracker
               </h3>
               <p className="text-indigo-200 leading-relaxed text-sm max-w-2xl">
-                Compare each trainee's decision-making assessment score across all three form stages — Pre-Session, Learner Reflection, and 30-Day Refresher — to identify who is embedding learning and who needs additional support.
+                Compare each trainee's decision-making assessment score across all three form stages — What You Know, What You Learnt, and What You Did — to identify who is embedding learning and who needs additional support.
               </p>
               <div className="mt-4 flex gap-4 flex-wrap text-xs">
                 <span className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-full font-semibold">
@@ -380,9 +380,9 @@ export default function InsightsTab({ session }: { session: Session }) {
           {/* Column headers */}
           <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 px-6 text-xs font-bold text-slate-400 uppercase tracking-wider">
             <span>Trainee</span>
-            <span className="text-center">Pre-Session</span>
-            <span className="text-center">Learner Reflection</span>
-            <span className="text-center">30-Day Refresher</span>
+            <span className="text-center">What You Know</span>
+            <span className="text-center">What You Learnt</span>
+            <span className="text-center">What You Did</span>
             <span className="text-center">Overall Trend</span>
           </div>
 
@@ -404,21 +404,21 @@ export default function InsightsTab({ session }: { session: Session }) {
 
                   {/* Pre */}
                   <div className="flex flex-col items-center gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">Pre-Session</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">What You Know</span>
                     <ScorePill pct={t.pre.pct} />
                     {t.pre.score !== null && <span className="text-[10px] text-slate-400">{t.pre.score}/{t.pre.score !== null ? (t.pre.pct !== null ? Math.round(t.pre.score / (t.pre.pct / 100)) : '?') : '?'} pts</span>}
                   </div>
 
                   {/* End */}
                   <div className="flex flex-col items-center gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">Learner Reflection</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">What You Learnt</span>
                     <ScorePill pct={t.end.pct} />
                     {t.end.score !== null && <span className="text-[10px] text-slate-400">{t.end.score} pts</span>}
                   </div>
 
                   {/* Refresher */}
                   <div className="flex flex-col items-center gap-1">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">30-Day Refresher</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider md:hidden">What You Did</span>
                     <ScorePill pct={t.refresher.pct} />
                     {t.refresher.score !== null && <span className="text-[10px] text-slate-400">{t.refresher.score} pts</span>}
                   </div>
@@ -455,19 +455,19 @@ export default function InsightsTab({ session }: { session: Session }) {
                       onClick={() => { setStageFilter('pre'); setSelectedResponseIdx(0); }}
                       className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all text-left ${stageFilter === 'pre' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                     >
-                      Pre-Session Forms ({allResponses.filter(r => r.stage === 'pre').length})
+                      What You Know ({allResponses.filter(r => r.stage === 'pre').length})
                     </button>
                     <button 
                       onClick={() => { setStageFilter('end'); setSelectedResponseIdx(0); }}
                       className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all text-left ${stageFilter === 'end' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                     >
-                      Learner Reflection Forms ({allResponses.filter(r => r.stage === 'end').length})
+                      What You Learnt ({allResponses.filter(r => r.stage === 'end').length})
                     </button>
                     <button 
                       onClick={() => { setStageFilter('refresher'); setSelectedResponseIdx(0); }}
                       className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all text-left ${stageFilter === 'refresher' ? 'bg-indigo-600 text-white shadow-md' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                     >
-                      30-Day Refresher Forms ({allResponses.filter(r => r.stage === 'refresher').length})
+                      What You Did ({allResponses.filter(r => r.stage === 'refresher').length})
                     </button>
                   </div>
                 </div>

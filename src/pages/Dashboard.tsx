@@ -186,9 +186,9 @@ export default function Dashboard() {
                   </td>
                   <td className="p-4 align-top">
                     <div className="flex gap-2">
-                      <Link to={`/session/${session.id}`} className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors hover:shadow-sm ${session.surveysCompleted.pre ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>Pre</Link>
-                      <Link to={`/session/${session.id}`} className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors hover:shadow-sm ${session.surveysCompleted.end ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>End</Link>
-                      <Link to={`/session/${session.id}`} className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors hover:shadow-sm ${session.surveysCompleted.refresher ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>Refresher</Link>
+                      <Link to={`/session/${session.id}`} className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors hover:shadow-sm ${session.surveysCompleted.pre ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>What You Know</Link>
+                      <Link to={`/session/${session.id}`} className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors hover:shadow-sm ${session.surveysCompleted.end ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>What You Learnt</Link>
+                      <Link to={`/session/${session.id}`} className={`px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer transition-colors hover:shadow-sm ${session.surveysCompleted.refresher ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`}>What You Did</Link>
                     </div>
                   </td>
                   <td className="p-4 align-top">

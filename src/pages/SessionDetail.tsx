@@ -163,9 +163,9 @@ export default function SessionDetail() {
                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
              }`}
            >
-             {tab === 'pre' && 'Pre-Session Form'}
-             {tab === 'end' && 'Learner Reflection Form'}
-             {tab === 'refresher' && 'Learning Transfer Report'}
+             {tab === 'pre' && 'What You Know'}
+             {tab === 'end' && 'What You Learnt'}
+             {tab === 'refresher' && 'What You Did'}
              {tab === 'insights' && <><BarChart2 size={16} /> Evaluation Insights</>}
            </button>
         ))}
