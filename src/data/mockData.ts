@@ -124,6 +124,10 @@ export const endSessionTemplate: SurveyTemplate = {
   questions: [
     { id: '1', type: 'text', text: 'During a facilitated conversation between two conflicting employees, one suddenly walks out of the room in anger. Based on today\'s mediation training, what should be your next steps?' },
     { id: '2', type: 'text', text: 'You must address an employee who has been consistently interrupting and belittling a colleague during team meetings. Using the frameworks taught today, outline the structure of your conversation with them.' },
+    { id: '2a', type: 'choice', text: 'What does the FAIR Model represent?', options: ['Facilitate, Appreciate, Innovate, Resolve', 'Focus, Analyze, Implement, Review', 'Facilitate, Assess, Integrate, Resolve', 'Find, Address, Innovate, Restore'] },
+    { id: '2b', type: 'choice', text: 'What is a core principle of "Structured Empathy"?', options: ['Validating emotions without validating behavior', 'Agreeing with the person\'s actions', 'Pointing out the person\'s mistakes immediately', 'Ignoring emotions to focus on facts'] },
+    { id: '2c', type: 'choice', text: 'In conflict resolution, what is the primary goal of a "Cooling-off period"?', options: ['To respect physiological boundaries and allow emotions to settle', 'To punish the parties involved', 'To avoid dealing with the conflict', 'To allow time to gather disciplinary evidence'] },
+    { id: '2d', type: 'choice', text: 'What characterizes the "Non-violent communication" methodology?', options: ['Stating observable behaviors without labels or judgments', 'Telling people exactly what they must do', 'Using labels to categorize bad attitudes', 'Forcing immediate compromises'] },
     { id: '3', type: 'text', text: 'What is one concept, tool, or idea from today that you understand clearly and could explain to a colleague?' },
     { id: '4', type: 'text', text: 'Imagine you’re back at work tomorrow. Which situation would you apply this training to first, and what would you do differently?' },
     { id: '5', type: 'choice', text: 'Choose the statement that best describes your readiness to apply what you learned:', options: [
@@ -155,6 +159,10 @@ export const refresherTemplate: SurveyTemplate = {
   questions: [
     { id: '1', type: 'text', text: 'Think of a time in the past month where you noticed a potential conflict brewing between colleagues. How did you use early intervention mediation techniques to prevent it from escalating?' },
     { id: '2', type: 'text', text: 'Describe a situation since the training where you successfully mediated a dispute using the structured empathy approach. How did the participants react, and what was the outcome?' },
+    { id: '2a', type: 'choice', text: 'What does the FAIR Model represent?', options: ['Facilitate, Appreciate, Innovate, Resolve', 'Focus, Analyze, Implement, Review', 'Facilitate, Assess, Integrate, Resolve', 'Find, Address, Innovate, Restore'] },
+    { id: '2b', type: 'choice', text: 'What is a core principle of "Structured Empathy"?', options: ['Validating emotions without validating behavior', 'Agreeing with the person\'s actions', 'Pointing out the person\'s mistakes immediately', 'Ignoring emotions to focus on facts'] },
+    { id: '2c', type: 'choice', text: 'In conflict resolution, what is the primary goal of a "Cooling-off period"?', options: ['To respect physiological boundaries and allow emotions to settle', 'To punish the parties involved', 'To avoid dealing with the conflict', 'To allow time to gather disciplinary evidence'] },
+    { id: '2d', type: 'choice', text: 'What characterizes the "Non-violent communication" methodology?', options: ['Stating observable behaviors without labels or judgments', 'Telling people exactly what they must do', 'Using labels to categorize bad attitudes', 'Forcing immediate compromises'] },
     { id: '3', type: 'text', text: 'List the situations where you felt like you had an opportunity to apply the training at work, in the past month.' },
     { id: '4', type: 'text', text: 'Describe a real situation where you applied something from the training at work. What was the situation? Which specific skill or method did you use? What did you do step-by-step? What happened as a result?' },
     { id: '5', type: 'text', text: 'Which parts of the training felt difficult to apply in real work? Why?' },
@@ -335,7 +343,7 @@ export const mockPopulatedResponses: SurveyResponse[] = [
 export const initialSessions: Session[] = [
   {
     id: 'b6e83',
-    courseName: 'Leadership Executive Coaching (Q3)',
+    courseName: 'Practical Mediation Skills (Q3)',
     trainerName: 'Sarah Jenkins',
     date: '2026-04-10',
     companyTaught: 'ACME Corp',
