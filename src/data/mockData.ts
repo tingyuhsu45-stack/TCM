@@ -237,6 +237,10 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     answers: { 
       '1': 'I would follow them immediately to ensure they were okay and demand they return to the mediation. [AI_SCORE: 4]', 
       '2': 'I would document their behavior, invite them to my office, and issue a formal warning right away. [AI_SCORE: 5]', 
+      '2a': 'Facilitate, Appreciate, Innovate, Resolve',
+      '2b': 'Agreeing with the person\'s actions',
+      '2c': 'To respect physiological boundaries and allow emotions to settle',
+      '2d': 'Telling people exactly what they must do',
       '3': 'Active listening.', '4': 'Waiting before speaking up in meetings.', '5': 'I can confidently apply the tools in real situations', '6': 'I demonstrated the behaviors effectively', '7': 'Improved output efficiency.', '8': '', '9': 'Yes', '10': '', '11': 'No, please don\'t use', '12': [], '13': '4'
     }
   },
@@ -247,6 +251,10 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     answers: { 
       '1': 'I caught an email chain getting hostile and transitioned it to a phone call before it blew up. [AI_SCORE: 10]', 
       '2': 'Booked an unhurried conversation with Liam to genuinely ask how he is. Everything went smooth. [AI_SCORE: 10]', 
+      '2a': 'Facilitate, Appreciate, Innovate, Resolve',
+      '2b': 'Agreeing with the person\'s actions',
+      '2c': 'To respect physiological boundaries and allow emotions to settle',
+      '2d': 'Telling people exactly what they must do',
       '3': 'Two colleagues had a communication breakdown over a delayed project.', '4': 'I set up a facilitated conversation using the structured empathy approach.', '5': 'Nothing felt difficult once I practised it.', '6': 'I proactively check in with team members individually.', '7': 'Roleplaying with peers.', '8': '', '9': 'Yes', '10': '', '11': 'No, please don\'t use', '12': []
     }
   },
@@ -309,6 +317,10 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     answers: { 
       '1': 'Respect their boundary, then reach out later expressing empathy and offering to reschedule. [AI_SCORE: 10]', 
       '2': 'Share specific observations of the interruptions, ask for their perspective, and co-create ground rules. [AI_SCORE: 10]', 
+      '2a': 'Facilitate, Appreciate, Innovate, Resolve',
+      '2b': 'Validating emotions without validating behavior',
+      '2c': 'To respect physiological boundaries and allow emotions to settle',
+      '2d': 'Stating observable behaviors without labels or judgments',
       '3': 'Using non-violent communication.', '4': 'Scheduling longer 1-on-1s.', '5': 'I can confidently apply the tools in real situations', '6': 'I demonstrated the behaviors effectively', '7': 'Better listening skills.', '8': '', '9': 'Yes', '10': 'Highly recommended.', '11': 'Yes, happy to use', '12': [], '13': '4'
     }
   },
@@ -319,6 +331,10 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     answers: { 
       '1': 'Saw passive-aggressive behavior and intervened with a neutral check-in question. [AI_SCORE: 10]', 
       '2': 'Used the framework step by step on a junior staff dispute, leading to mutual understanding. [AI_SCORE: 10]', 
+      '2a': 'Facilitate, Appreciate, Innovate, Resolve',
+      '2b': 'Validating emotions without validating behavior',
+      '2c': 'To respect physiological boundaries and allow emotions to settle',
+      '2d': 'Stating observable behaviors without labels or judgments',
       '3': 'A new team member was struggling to integrate and clashing with a senior colleague.', '4': 'Had separate conversations first, then joint.', '5': 'Staying neutral during high-emotions is hard.', '6': 'Scheduling regular check-ins early.', '7': 'Reference cards.', '8': '', '9': 'Yes', '10': '', '11': 'Yes, happy to use', '12': []
     }
   },
@@ -341,6 +357,10 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     answers: { 
       '1': 'I would be confused and wait for them to contact me. [AI_SCORE: 3]', 
       '2': 'Ask one of her closer colleagues to talk to her to avoid putting her on the spot. [AI_SCORE: 0]', 
+      '2a': 'Focus, Analyze, Implement, Review',
+      '2b': 'Agreeing with the person\'s actions',
+      '2c': 'To punish the parties involved',
+      '2d': 'Using labels to categorize bad attitudes',
       '3': 'A bit on active listening.', '4': 'Nothing much yet.', '5': 'I understand the concepts but don\'t yet feel ready to use them', '6': 'I struggled to demonstrate the behaviors', '7': 'Basic awareness.', '8': 'More real-life examples.', '9': 'No', '10': '', '11': 'Yes, happy to use', '12': [], '13': '2'
     }
   },
@@ -351,6 +371,10 @@ export const mockPopulatedResponses: SurveyResponse[] = [
     answers: { 
       '1': 'I thought about intervening but decided it was not my place. [AI_SCORE: 2]', 
       '2': 'I haven\'t mediated anything successfully yet. [AI_SCORE: 2]', 
+      '2a': 'Focus, Analyze, Implement, Review',
+      '2b': 'Agreeing with the person\'s actions',
+      '2c': 'To punish the parties involved',
+      '2d': 'Using labels to categorize bad attitudes',
       '3': 'Handled a minor dispute.', '4': 'Suggested they speak to HR.', '5': 'I still feel uncomfortable initiating difficult conversations.', '6': 'More aware when conflicts brew.', '7': 'None.', '8': '', '9': 'No', '10': '', '11': 'No, please don\'t use', '12': []
     }
   }
